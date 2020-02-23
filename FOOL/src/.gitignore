@@ -1,0 +1,16 @@
+/SVM.tokens
+/SVMBaseListener.java
+/SVMBaseVisitor.java
+/SVMLexer.java
+/SVMLexer.tokens
+/SVMListener.java
+/SVMParser.java
+/SVMVisitor.java
+/FOOL.tokens
+/FOOLBaseListener.java
+/FOOLBaseVisitor.java
+/FOOLLexer.java
+/FOOLLexer.tokens
+/FOOLListener.java
+/FOOLParser.java
+/FOOLVisitor.java

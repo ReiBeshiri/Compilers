@@ -1,4 +1,4 @@
-// Generated from FOOL.g4 by ANTLR 4.7
+// Generated from FOOL.g4 by ANTLR 4.4
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class FOOLLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -25,64 +25,23 @@ public class FOOLLexer extends Lexer {
 		FALSE=10, LPAR=11, RPAR=12, CLPAR=13, CRPAR=14, IF=15, THEN=16, ELSE=17, 
 		PRINT=18, LET=19, IN=20, VAR=21, FUN=22, INT=23, BOOL=24, ID=25, WHITESP=26, 
 		COMMENT=27, ERR=28;
-	public static String[] channelNames = {
-		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
-	};
-
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
 
+	public static final String[] tokenNames = {
+		"'\\u0000'", "'\\u0001'", "'\\u0002'", "'\\u0003'", "'\\u0004'", "'\\u0005'", 
+		"'\\u0006'", "'\\u0007'", "'\b'", "'\t'", "'\n'", "'\\u000B'", "'\f'", 
+		"'\r'", "'\\u000E'", "'\\u000F'", "'\\u0010'", "'\\u0011'", "'\\u0012'", 
+		"'\\u0013'", "'\\u0014'", "'\\u0015'", "'\\u0016'", "'\\u0017'", "'\\u0018'", 
+		"'\\u0019'", "'\\u001A'", "'\\u001B'", "'\\u001C'"
+	};
 	public static final String[] ruleNames = {
 		"COLON", "COMMA", "ASS", "SEMIC", "EQ", "PLUS", "TIMES", "INTEGER", "TRUE", 
 		"FALSE", "LPAR", "RPAR", "CLPAR", "CRPAR", "IF", "THEN", "ELSE", "PRINT", 
 		"LET", "IN", "VAR", "FUN", "INT", "BOOL", "ID", "WHITESP", "COMMENT", 
 		"ERR"
 	};
-
-	private static final String[] _LITERAL_NAMES = {
-		null, "':'", "','", "'='", "';'", "'=='", "'+'", "'*'", null, "'true'", 
-		"'false'", "'('", "')'", "'{'", "'}'", "'if'", "'then'", "'else'", "'print'", 
-		"'let'", "'in'", "'var'", "'fun'", "'int'", "'bool'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, "COLON", "COMMA", "ASS", "SEMIC", "EQ", "PLUS", "TIMES", "INTEGER", 
-		"TRUE", "FALSE", "LPAR", "RPAR", "CLPAR", "CRPAR", "IF", "THEN", "ELSE", 
-		"PRINT", "LET", "IN", "VAR", "FUN", "INT", "BOOL", "ID", "WHITESP", "COMMENT", 
-		"ERR"
-	};
-	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
-
-	/**
-	 * @deprecated Use {@link #VOCABULARY} instead.
-	 */
-	@Deprecated
-	public static final String[] tokenNames;
-	static {
-		tokenNames = new String[_SYMBOLIC_NAMES.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			tokenNames[i] = VOCABULARY.getLiteralName(i);
-			if (tokenNames[i] == null) {
-				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-			}
-
-			if (tokenNames[i] == null) {
-				tokenNames[i] = "<INVALID>";
-			}
-		}
-	}
-
-	@Override
-	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
-
-	@Override
-
-	public Vocabulary getVocabulary() {
-		return VOCABULARY;
-	}
 
 
 	int lexicalErrors=0;
@@ -97,13 +56,13 @@ public class FOOLLexer extends Lexer {
 	public String getGrammarFileName() { return "FOOL.g4"; }
 
 	@Override
+	public String[] getTokenNames() { return tokenNames; }
+
+	@Override
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override
 	public String getSerializedATN() { return _serializedATN; }
-
-	@Override
-	public String[] getChannelNames() { return channelNames; }
 
 	@Override
 	public String[] getModeNames() { return modeNames; }
@@ -114,21 +73,17 @@ public class FOOLLexer extends Lexer {
 	@Override
 	public void action(RuleContext _localctx, int ruleIndex, int actionIndex) {
 		switch (ruleIndex) {
-		case 27:
-			ERR_action((RuleContext)_localctx, actionIndex);
-			break;
+		case 27: ERR_action((RuleContext)_localctx, actionIndex); break;
 		}
 	}
 	private void ERR_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
-		case 0:
-			 System.out.println("Invalid char: "+ getText()); lexicalErrors++; 
-			break;
+		case 0:  System.out.println("Invalid char: "+ getText()); lexicalErrors++;  break;
 		}
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2\36\u00b6\b\1\4\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\36\u00b6\b\1\4\2"+
 		"\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4"+
 		"\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22"+
 		"\t\22\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31"+
@@ -144,15 +99,15 @@ public class FOOLLexer extends Lexer {
 		"\3\34\3\34\3\34\3\35\3\35\3\35\3\35\3\35\3\u00a9\2\36\3\3\5\4\7\5\t\6"+
 		"\13\7\r\b\17\t\21\n\23\13\25\f\27\r\31\16\33\17\35\20\37\21!\22#\23%\24"+
 		"\'\25)\26+\27-\30/\31\61\32\63\33\65\34\67\359\36\3\2\5\4\2C\\c|\5\2\62"+
-		";C\\c|\5\2\13\f\17\17\"\"\2\u00bb\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2"+
-		"\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3"+
-		"\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2"+
-		"\2\2\37\3\2\2\2\2!\3\2\2\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2"+
-		"\2\2+\3\2\2\2\2-\3\2\2\2\2/\3\2\2\2\2\61\3\2\2\2\2\63\3\2\2\2\2\65\3\2"+
-		"\2\2\2\67\3\2\2\2\29\3\2\2\2\3;\3\2\2\2\5=\3\2\2\2\7?\3\2\2\2\tA\3\2\2"+
-		"\2\13C\3\2\2\2\rF\3\2\2\2\17H\3\2\2\2\21U\3\2\2\2\23W\3\2\2\2\25\\\3\2"+
-		"\2\2\27b\3\2\2\2\31d\3\2\2\2\33f\3\2\2\2\35h\3\2\2\2\37j\3\2\2\2!m\3\2"+
-		"\2\2#r\3\2\2\2%w\3\2\2\2\'}\3\2\2\2)\u0081\3\2\2\2+\u0084\3\2\2\2-\u0088"+
+		";C\\c|\5\2\13\f\17\17\"\"\u00bb\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2"+
+		"\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2"+
+		"\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2"+
+		"\2\37\3\2\2\2\2!\3\2\2\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2"+
+		"\2+\3\2\2\2\2-\3\2\2\2\2/\3\2\2\2\2\61\3\2\2\2\2\63\3\2\2\2\2\65\3\2\2"+
+		"\2\2\67\3\2\2\2\29\3\2\2\2\3;\3\2\2\2\5=\3\2\2\2\7?\3\2\2\2\tA\3\2\2\2"+
+		"\13C\3\2\2\2\rF\3\2\2\2\17H\3\2\2\2\21U\3\2\2\2\23W\3\2\2\2\25\\\3\2\2"+
+		"\2\27b\3\2\2\2\31d\3\2\2\2\33f\3\2\2\2\35h\3\2\2\2\37j\3\2\2\2!m\3\2\2"+
+		"\2#r\3\2\2\2%w\3\2\2\2\'}\3\2\2\2)\u0081\3\2\2\2+\u0084\3\2\2\2-\u0088"+
 		"\3\2\2\2/\u008c\3\2\2\2\61\u0090\3\2\2\2\63\u0095\3\2\2\2\65\u009d\3\2"+
 		"\2\2\67\u00a3\3\2\2\29\u00b1\3\2\2\2;<\7<\2\2<\4\3\2\2\2=>\7.\2\2>\6\3"+
 		"\2\2\2?@\7?\2\2@\b\3\2\2\2AB\7=\2\2B\n\3\2\2\2CD\7?\2\2DE\7?\2\2E\f\3"+

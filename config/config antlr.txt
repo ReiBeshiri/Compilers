@@ -1,0 +1,16 @@
+1) dal marketplace eclipse scaricare e installare ANTLR IDE così ora su Window->Preferences-> c'è ANTLR 4
+
+2) Window->Preferences->ANTLR 4->Tool -> Add e selezionare "antlr-4.7.jar" e poi spuntarlo inoltre
+   nelle opzioni: indicare "./src" come Directory, inoltre "Generate a parse tree listener/Generate parse tree visitors" NON devono avere la spunta
+
+3) Window->Preferences->Java->Build Path->User Librarie ->new e scrivere "ANTLR runtime" poi sempre lì
+   ->Add External Jars e selezionare "antlr-runtime-4.7.jar" 
+
+Ora dovrebbe andare, per farlo ricompilare elimina i file in default package tranne ExecuteVM e Test, poi cambiare una roba in 
+FOOL.g4 tipo metti uno spazio bianco o una new line e salvare (ctrl + s su windows) e ora ti ricompila il prog con i jar giusti
+
+
+Se non va provare a cliccare dx sul nome del prog e aggiungere da lì il runtime:
+destro sul nome del progetto->Build Path->Add Libraries->User Library e selezionare "ANTLR runtime"
+
+

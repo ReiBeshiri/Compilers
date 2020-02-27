@@ -117,7 +117,9 @@ factor	returns [Node ast]
 	    (EQ l=value 
 	     {$ast= new EqualNode ($ast,$l.ast);}
 	     | LE l=value 
-	     {$ast= new LessEqualNode ($ast,$l.ast);} 
+	     {$ast= new LessEqualNode ($ast,$l.ast);}
+	     | GE l=value 
+	     {$ast= new GreatEqualNode ($ast,$l.ast);}
 	    )*
  	;	 	
  
@@ -160,36 +162,49 @@ value	returns [Node ast]
  * LEXER RULES
  *------------------------------------------------------------------*/
 
-COLON	: ':' ;
+PLUS  	: '+' ;
+MINUS   : '-' ;
+TIMES   : '*' ;
+DIV 	: '/' ;
+LPAR	: '(' ;
+RPAR	: ')' ;
+CLPAR	: '{' ;
+CRPAR	: '}' ;
+SEMIC 	: ';' ;
+COLON   : ':' ; 
 COMMA	: ',' ;
+DOT	    : '.' ;
+OR	    : '||';
+AND	    : '&&';
+NOT	    : '!' ;
+GE	    : '>=' ;
+LE	    : '<=' ;
+EQ	    : '==' ;	
 ASS	    : '=' ;
-SEMIC   : ';' ;
-EQ      : '==';
-LE		: '<=';
-PLUS	: '+' ;
-TIMES	: '*' ;
-INTEGER : ('-')?(('1'..'9')('0'..'9')*) | '0';
 TRUE	: 'true' ;
 FALSE	: 'false' ;
-LPAR 	: '(' ;
-RPAR	: ')' ;
-CLPAR 	: '{' ;
-CRPAR	: '}' ;
-IF 	    : 'if' ;
-THEN 	: 'then' ;
-ELSE 	: 'else' ;
-PRINT	: 'print' ; 
-LET	    : 'let' ;
-IN	    : 'in' ;
-VAR	    : 'var' ;
-FUN	    : 'fun' ;
+IF	    : 'if' ;
+THEN	: 'then';
+ELSE	: 'else' ;
+PRINT	: 'print' ;
+LET     : 'let' ;	
+IN      : 'in' ;	
+VAR     : 'var' ;
+FUN	    : 'fun' ; 
+CLASS	: 'class' ; 
+EXTENDS : 'extends' ;	
+NEW 	: 'new' ;	
+NULL    : 'null' ;	  
 INT	    : 'int' ;
 BOOL	: 'bool' ;
- 
-ID 	    : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')* ; 
- 
-WHITESP : (' '|'\t'|'\n'|'\r')+ -> channel(HIDDEN) ;
+ARROW   : '->' ; 	
+INTEGER : '0' | ('-')?(('1'..'9')('0'..'9')*) ; 
+
+ID  	: ('a'..'z'|'A'..'Z')('a'..'z' | 'A'..'Z' | '0'..'9')* ;
+
+
+WHITESP  : ( '\t' | ' ' | '\r' | '\n' )+    -> channel(HIDDEN) ;
 
 COMMENT : '/*' (.)*? '*/' -> channel(HIDDEN) ;
-
-ERR     : . { System.out.println("Invalid char: "+ getText()); lexicalErrors++; } -> channel(HIDDEN); 
+ 
+ERR   	 : . { System.out.println("Invalid char: "+ getText()); lexicalErrors++; } -> channel(HIDDEN); 

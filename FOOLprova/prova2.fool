@@ -3,10 +3,10 @@ let
   fun f:bool (n:int, m:int)
     let 
       var x:int = m;
-  in n <= x;   
+  in n >= x;   
 in  
   print ( 
     if f(y,8) 
-      then { false }
+      then { 5 }
       else { 10 }
   ); 

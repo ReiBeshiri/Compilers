@@ -116,6 +116,8 @@ factor	returns [Node ast]
 	: f=value {$ast= $f.ast;}
 	    (EQ l=value 
 	     {$ast= new EqualNode ($ast,$l.ast);}
+	     | LE l=value 
+	     {$ast= new LessEqualNode ($ast,$l.ast);} 
 	    )*
  	;	 	
  
@@ -162,7 +164,8 @@ COLON	: ':' ;
 COMMA	: ',' ;
 ASS	    : '=' ;
 SEMIC   : ';' ;
-EQ      : '==' ;
+EQ      : '==';
+LE		: '<=';
 PLUS	: '+' ;
 TIMES	: '*' ;
 INTEGER : ('-')?(('1'..'9')('0'..'9')*) | '0';

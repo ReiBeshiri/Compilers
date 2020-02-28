@@ -24,6 +24,8 @@ public class PlusNode implements Node {
   }
   
   public String codeGeneration() {
-	  return left.codeGeneration()+right.codeGeneration()+"add\n";
+	  return  left.codeGeneration()+
+			  right.codeGeneration()+
+			  "add\n";
   }
 }  

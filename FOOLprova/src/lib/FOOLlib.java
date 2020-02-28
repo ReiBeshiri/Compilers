@@ -5,6 +5,11 @@ public class FOOLlib {
 	
   public static int typeErrors = 0;	
 
+  /*
+   * 1 -> true
+   * tutti gli altri numeri -> false
+   * 
+   * */
   //valuta se il tipo "a" è <= al tipo "b", dove "a" e "b" sono tipi di base: int o bool
   public static boolean isSubtype (Node a, Node b) {
 	return a.getClass().equals(b.getClass()) ||

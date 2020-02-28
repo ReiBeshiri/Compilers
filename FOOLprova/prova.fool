@@ -18,7 +18,7 @@ let
   var x:int = 1;
   var b:bool = true;
 in
-  print (if (b) then { x+1 } else { x+2 });
+  print (if (b || false) then { x+1 } else { x+2 });
 ---------------
 let 
   fun f:int (i:int, j:int) i+j;

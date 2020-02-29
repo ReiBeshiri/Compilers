@@ -19,7 +19,7 @@ public class OrNode implements Node {
   public Node typeCheck() throws TypeException {
 	if ( ! ( FOOLlib.isSubtype(left.typeCheck(), new IntTypeNode()) &&
 	         FOOLlib.isSubtype(right.typeCheck(), new IntTypeNode()) ) ) 
-		throw new TypeException("Non bool or derivate in or");
+		throw new TypeException("Non bool or derivate in ||");
 	return new BoolTypeNode();
   }
   

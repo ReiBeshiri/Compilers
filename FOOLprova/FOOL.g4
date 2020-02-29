@@ -102,6 +102,8 @@ exp	returns [Node ast]
  	: f=term {$ast= $f.ast;}
  	    (PLUS l=term
  	     {$ast= new PlusNode ($ast,$l.ast);}
+ 	     | MINUS l=term
+ 	     {$ast= new MinusNode ($ast,$l.ast);}
  	     | OR l = term
  	     {$ast= new OrNode ($ast,$l.ast);}
  	    )*
@@ -111,6 +113,10 @@ term	returns [Node ast]
 	: f=factor {$ast= $f.ast;}
 	    (TIMES l=factor
 	     {$ast= new TimesNode ($ast,$l.ast);}
+	     | DIV l=factor
+	     {$ast= new DivNode ($ast,$l.ast);}
+	     | AND l = factor
+	     {$ast= new AndNode ($ast,$l.ast);}
 	    )*
 	;
 	
@@ -136,7 +142,9 @@ value	returns [Node ast]
 	  {$ast= $e.ast;}  
 	| IF x=exp THEN CLPAR y=exp CRPAR 
 		   ELSE CLPAR z=exp CRPAR 
-	  {$ast= new IfNode($x.ast,$y.ast,$z.ast);}	 
+	  {$ast= new IfNode($x.ast,$y.ast,$z.ast);}	
+	| NOT LPAR e=exp RPAR 
+	  {$ast= new NotNode($e.ast);}
 	| PRINT LPAR e=exp RPAR	
 	  {$ast= new PrintNode($e.ast);}
 	| i=ID 

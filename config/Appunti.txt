@@ -1,0 +1,37 @@
+Nella grammatica del parser:
+* -> l'espressione ci può essere 0 o più volte (0, 1, 2, ... N)
++ -> l'espressione ci può essere 1 o più volte (1, 2, ... N)
+? -> l'espressione è opzionale (può apparire 0 o 1 volta)
+Per tutti i simboli guardare il link.
+https://theantlrguy.atlassian.net/wiki/spaces/ANTLR3/pages/2687036/ANTLR+Cheat+Sheet
+
+HOTYPE
+E' un tipo con cui dichiarare una variabile. 
+La dichiarazione può essere un tipo base (bool o int):
+var x:bool = false;
+var x:int = 10;
+Oppure può essere una dichiarazione di tipo funzionale:
+var x: (int, int) -> bool;
+(in cui a x verrà assegnata una funzione che abbia due parametri di tipo int e che ritorni un bool).
+
+Esempio di:  VAR ID COLON hotype ASS exp SEMIC
+		
+		↓
+
+var x:bool = false; OPPURE var x: (int, int) -> bool;
+	
+
+Esempio di: FUN ID COLON type LPAR (ID COLON hotype (COMMA ID COLON hotype)* )? RPAR 
+		(LET declist IN)? exp SEMIC
+
+		↓
+
+fun x:int (a:bool, b:(int, int)->int)
+	let			
+		fun linsum:int(a:int,b:int)  //(WLET declist" consente di dichiarare altre variabili o funzioni)
+        		(a+b)*c;      
+    	in 
+      		a + b(5,6);
+	
+		
+

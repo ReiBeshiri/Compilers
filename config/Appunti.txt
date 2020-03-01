@@ -14,6 +14,13 @@ Oppure può essere una dichiarazione di tipo funzionale:
 var x: (int, int) -> bool;
 (in cui a x verrà assegnata una funzione che abbia due parametri di tipo int e che ritorni un bool).
 
+ARROW 
+Viene prodotto con la grammatica "LPAR (hotype (COMMA hotype)* )? RPAR ARROW type"
+Esempi:
+(int, int) -> int
+(int, int) -> bool
+(int, (bool, bool) -> int) -> int
+
 Esempio di:  VAR ID COLON hotype ASS exp SEMIC
 		
 		↓
@@ -32,6 +39,7 @@ fun x:int (a:bool, b:(int, int)->int)
         		(a+b)*c;      
     	in 
       		a + b(5,6);
-	
+
+
 		
 

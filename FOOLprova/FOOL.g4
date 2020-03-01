@@ -168,7 +168,7 @@ hotype  returns [Node ast]
 type	returns [Node ast]
   : INT  {$ast=new IntTypeNode();}
   | BOOL {$ast=new BoolTypeNode();} 
-  | ID   {$ast=new IdNode();} //controllo se id esiste
+  | ID   {$ast=new IdNode();} //controllo se id esiste -> x:fun
 	;	
 
 arrow 	: LPAR (hotype (COMMA hotype)* )? RPAR ARROW type ;

@@ -6,7 +6,7 @@ let
       fun linsum:int(a:int,b:int)
         (a+b)*c;      
     in 
-      g(lin2);   
+      g(linsum);   
 in
   print(f(2));
   

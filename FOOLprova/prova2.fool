@@ -2,4 +2,4 @@ let
   var x:bool = false;
   var b:bool = true;
 in
-  print (if ( ! (0) ) then { 45 } else { 10 });
+  print (if ( ! ( 2 == 3 ) ) then { 44 - 3 } else { 10 });

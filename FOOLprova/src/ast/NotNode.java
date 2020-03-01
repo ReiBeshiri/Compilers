@@ -19,14 +19,15 @@ public class NotNode implements Node {
 		return new BoolTypeNode();
   }
       
+
   public String codeGeneration() {
 	  String isTrue= FOOLlib.freshLabel();
 	  String isFalse= FOOLlib.freshLabel();
 	  String ends= FOOLlib.freshLabel();
-	  return  	 exp.codeGeneration()+		// left è 0 o 1
+	  return  	 exp.codeGeneration()+		// prendo l'espressione tra parentesi e trovo ricorsivamente il risultato (bool)
 				 "push 1\n"+				// e lo confronto con 1
-				 "beq "+isTrue+"\n"+
-				 "b "+isFalse+"\n"+				 
+				 "beq "+isTrue+"\n"+		// se è 1 vado is true e pusho 0 (inverso)
+				 "b "+isFalse+"\n"+			// se non è 1 vado is false e pusho 1 (inverso)	 
 				 isTrue+": \n"+
 				 "push 0\n"+
 				 "b "+ends+"\n"+	

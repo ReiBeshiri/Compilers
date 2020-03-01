@@ -90,13 +90,6 @@ declist	returns [ArrayList<Node> astlist]
       ) SEMIC
     )+          
 	;
-	
-type	returns [Node ast]
-  : INT  {$ast=new IntTypeNode();}
-  | BOOL {$ast=new BoolTypeNode();} 
-	;	
-
-//FINO A QUI
 
 exp	returns [Node ast]
  	: f=term {$ast= $f.ast;}
@@ -166,7 +159,19 @@ value	returns [Node ast]
 	   	 {$ast= new CallNode($i.text,entry,arglist,nestingLevel);} 
 	   )?
  	; 
+ 	
+hotype  returns [Node ast]
+		: t=type {$ast = $t.ast;} 
+        | a=arrow {$ast = $a.ast;}
+        ;
+	
+type	returns [Node ast]
+  : INT  {$ast=new IntTypeNode();}
+  | BOOL {$ast=new BoolTypeNode();} 
+  | ID   {$ast=new IdNode();} //controllo se id esiste
+	;	
 
+arrow 	: LPAR (hotype (COMMA hotype)* )? RPAR ARROW type ;
   		
 /*------------------------------------------------------------------
  * LEXER RULES

@@ -27,11 +27,11 @@ public class AndNode implements Node {
 	  String isTrue= FOOLlib.freshLabel();
 	  String isFalse= FOOLlib.freshLabel();
 	  String ends= FOOLlib.freshLabel();
-	  return  	 left.codeGeneration()+		// left è 0 o 1
-				 "push 0\n"+				// e lo confronto con 1
-				 "beq "+isFalse+"\n"+
+	  return  	 left.codeGeneration()+		// left è 0 o 1 					
+				 "push 0\n"+				// e lo confronto con 0				
+				 "beq "+isFalse+"\n"+										
 				 right.codeGeneration()+		// right è 0 o 1
-				 "push 0\n"+				// e lo confronto con 1
+				 "push 0\n"+				// e lo confronto con 0
 				 "beq "+isFalse+"\n"+
 				 "b "+isTrue+"\n"+				 
 				 isFalse+": \n"+

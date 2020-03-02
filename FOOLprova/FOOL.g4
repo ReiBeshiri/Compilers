@@ -145,7 +145,7 @@ value	returns [Node ast]
            int j=nestingLevel;
            STentry entry=null; 
            while (j>=0 && entry==null)
-             entry=(symTable.get(j--)).get($i.text);
+             entry=(symTable.get(j--)).get($i.text); //cerca se l'id esiste nella symTable (arraylist) e ritorna la STentry
            if (entry==null) {
              System.out.println("Id "+$i.text+" at line "+$i.line+" not declared");
              stErrors++; }               

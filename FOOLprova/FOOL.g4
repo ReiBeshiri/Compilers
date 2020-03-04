@@ -41,7 +41,7 @@ declist	returns [ArrayList<Node> astlist]
             {VarNode v = new VarNode($i.text,$t.ast,$e.ast);  
              $astlist.add(v);                                 
              HashMap<String,STentry> hm = symTable.get(nestingLevel);
-             if ( hm.put($i.text,new STentry(nestingLevel,$t.ast,offset--)) != null  ) {
+             if ( hm.put($i.text,new STentry(nestingLevel,$t.ast,offset-=2)) != null  ) {
               System.out.println("Var id "+$i.text+" at line "+$i.line+" already declared");
               stErrors++; }  
             }  
@@ -52,7 +52,7 @@ declist	returns [ArrayList<Node> astlist]
                $astlist.add(f);                              
                HashMap<String,STentry> hm = symTable.get(nestingLevel);
                ArrayList<Node> parTypes = new ArrayList<Node>();
-               if ( hm.put($i.text,new STentry(nestingLevel,new ArrowTypeNode(parTypes,$t.ast),offset--)) != null  ) {
+               if ( hm.put($i.text,new STentry(nestingLevel,new ArrowTypeNode(parTypes,$t.ast),offset-=2)) != null  ) {
                 System.out.println("Fun id "+$i.text+" at line "+$i.line+" already declared");
                 stErrors++; }
                 //creare una nuova hashmap per la symTable
@@ -66,7 +66,7 @@ declist	returns [ArrayList<Node> astlist]
                   parTypes.add($fty.ast);
                   ParNode fpar = new ParNode($fid.text,$fty.ast); //creo nodo ParNode
                   f.addPar(fpar);                                 //lo attacco al FunNode con addPar
-                  if ( hmn.put($fid.text,new STentry(nestingLevel,$fty.ast,paroffset++)) != null  ) { //aggiungo dich a hmn
+                  if ( hmn.put($fid.text,new STentry(nestingLevel,$fty.ast,paroffset+=2)) != null  ) { //aggiungo dich a hmn
                    System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
                    stErrors++; }
                   }
@@ -75,7 +75,7 @@ declist	returns [ArrayList<Node> astlist]
                     parTypes.add($ty.ast);
                     ParNode par = new ParNode($id.text,$ty.ast);
                     f.addPar(par);
-                    if ( hmn.put($id.text,new STentry(nestingLevel,$ty.ast,paroffset++)) != null  ) {
+                    if ( hmn.put($id.text,new STentry(nestingLevel,$ty.ast,paroffset+=2)) != null  ) {
                      System.out.println("Parameter id "+$id.text+" at line "+$id.line+" already declared");
                      stErrors++; }
                     }

@@ -168,10 +168,23 @@ hotype  returns [Node ast]
 type	returns [Node ast]
   : INT  {$ast=new IntTypeNode();}
   | BOOL {$ast=new BoolTypeNode();} 
-  | ID   {$ast=new IdNode();} //controllo se id esiste -> x:fun
+  //| ID   {$ast=new IdNode();} //controllo se id esiste -> x:fun
 	;	
 
-arrow 	: LPAR (hotype (COMMA hotype)* )? RPAR ARROW type ;
+arrow returns [Node ast] : 
+		{ArrayList<Node> parArrowTypes = new ArrayList<Node>();} 
+	LPAR ( h = hotype
+		{
+			parArrowTypes.add($h.ast);
+		} 
+	( COMMA h = hotype
+		{
+			parArrowTypes.add($h.ast);
+		}
+	)* 
+	)? RPAR ARROW t=type {
+		$ast = new ArrowTypeNode(parArrowTypes, $t.ast);
+	} ;
   		
 /*------------------------------------------------------------------
  * LEXER RULES

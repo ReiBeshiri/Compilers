@@ -2,7 +2,7 @@ package ast;
 import java.util.ArrayList;
 import lib.*;
 
-public class FunNode implements Node {
+public class FunNode implements DecNode {
 
   private String id;
   private Node type; 
@@ -78,6 +78,10 @@ public class FunNode implements Node {
 	    		"lra\n"+"js\n" // jump to $ra value
 			  );	  
 	  return "push "+ funl +"\n";
+  }
+
+  public Node getSymType() {
+	return type;
   }
 
 }  

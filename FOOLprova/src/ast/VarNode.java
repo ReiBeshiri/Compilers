@@ -1,7 +1,7 @@
 package ast;
 import lib.*;
 
-public class VarNode implements Node {
+public class VarNode implements DecNode{
 
   private String id;
   private Node type;
@@ -27,6 +27,10 @@ public class VarNode implements Node {
     
   public String codeGeneration() {
 	return exp.codeGeneration();
+  }
+
+  public Node getSymType() {
+	return type;
   }
 
 }  

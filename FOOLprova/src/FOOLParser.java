@@ -142,18 +142,15 @@ public class FOOLParser extends Parser {
 	public static class DeclistContext extends ParserRuleContext {
 		public ArrayList<Node> astlist;
 		public Token i;
-		public TypeContext t;
+		public HotypeContext t;
 		public ExpContext e;
 		public Token fid;
-		public TypeContext fty;
+		public HotypeContext fty;
 		public Token id;
-		public TypeContext ty;
+		public HotypeContext ty;
 		public DeclistContext d;
 		public List<ExpContext> exp() {
 			return getRuleContexts(ExpContext.class);
-		}
-		public TypeContext type(int i) {
-			return getRuleContext(TypeContext.class,i);
 		}
 		public TerminalNode ID(int i) {
 			return getToken(FOOLParser.ID, i);
@@ -165,6 +162,9 @@ public class FOOLParser extends Parser {
 			return getToken(FOOLParser.RPAR, i);
 		}
 		public List<TerminalNode> ID() { return getTokens(FOOLParser.ID); }
+		public HotypeContext hotype(int i) {
+			return getRuleContext(HotypeContext.class,i);
+		}
 		public TerminalNode SEMIC(int i) {
 			return getToken(FOOLParser.SEMIC, i);
 		}
@@ -173,9 +173,6 @@ public class FOOLParser extends Parser {
 			return getToken(FOOLParser.LPAR, i);
 		}
 		public List<TerminalNode> COMMA() { return getTokens(FOOLParser.COMMA); }
-		public List<TypeContext> type() {
-			return getRuleContexts(TypeContext.class);
-		}
 		public TerminalNode LET(int i) {
 			return getToken(FOOLParser.LET, i);
 		}
@@ -188,6 +185,9 @@ public class FOOLParser extends Parser {
 		public List<TerminalNode> COLON() { return getTokens(FOOLParser.COLON); }
 		public TerminalNode FUN(int i) {
 			return getToken(FOOLParser.FUN, i);
+		}
+		public List<HotypeContext> hotype() {
+			return getRuleContexts(HotypeContext.class);
 		}
 		public TerminalNode VAR(int i) {
 			return getToken(FOOLParser.VAR, i);
@@ -239,7 +239,7 @@ public class FOOLParser extends Parser {
 					setState(35); match(VAR);
 					setState(36); ((DeclistContext)_localctx).i = match(ID);
 					setState(37); match(COLON);
-					setState(38); ((DeclistContext)_localctx).t = type();
+					setState(38); ((DeclistContext)_localctx).t = hotype();
 					setState(39); match(ASS);
 					setState(40); ((DeclistContext)_localctx).e = exp();
 					VarNode v = new VarNode((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),((DeclistContext)_localctx).t.ast,((DeclistContext)_localctx).e.ast);  
@@ -256,7 +256,7 @@ public class FOOLParser extends Parser {
 					setState(43); match(FUN);
 					setState(44); ((DeclistContext)_localctx).i = match(ID);
 					setState(45); match(COLON);
-					setState(46); ((DeclistContext)_localctx).t = type();
+					setState(46); ((DeclistContext)_localctx).t = hotype();
 					//inserimento di ID nella symtable
 					               FunNode f = new FunNode((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),((DeclistContext)_localctx).t.ast);      
 					               _localctx.astlist.add(f);                              
@@ -278,7 +278,7 @@ public class FOOLParser extends Parser {
 						{
 						setState(50); ((DeclistContext)_localctx).fid = match(ID);
 						setState(51); match(COLON);
-						setState(52); ((DeclistContext)_localctx).fty = type();
+						setState(52); ((DeclistContext)_localctx).fty = hotype();
 						 
 						                  parTypes.add(((DeclistContext)_localctx).fty.ast);
 						                  ParNode fpar = new ParNode((((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null),((DeclistContext)_localctx).fty.ast); //creo nodo ParNode
@@ -296,7 +296,7 @@ public class FOOLParser extends Parser {
 							setState(54); match(COMMA);
 							setState(55); ((DeclistContext)_localctx).id = match(ID);
 							setState(56); match(COLON);
-							setState(57); ((DeclistContext)_localctx).ty = type();
+							setState(57); ((DeclistContext)_localctx).ty = hotype();
 
 							                    parTypes.add(((DeclistContext)_localctx).ty.ast);
 							                    ParNode par = new ParNode((((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null),((DeclistContext)_localctx).ty.ast);
@@ -998,10 +998,10 @@ public class FOOLParser extends Parser {
 		"\7\34\2\2\31\32\5\4\3\2\32\33\7\35\2\2\33\34\5\6\4\2\34\35\b\2\1\2\35"+
 		"\37\3\2\2\2\36\25\3\2\2\2\36\30\3\2\2\2\37 \3\2\2\2 !\b\2\1\2!\"\7\13"+
 		"\2\2\"#\7\2\2\3#\3\3\2\2\2$T\b\3\1\2%&\7\36\2\2&\'\7(\2\2\'(\7\f\2\2("+
-		")\5\20\t\2)*\7\25\2\2*+\5\6\4\2+,\b\3\1\2,Q\3\2\2\2-.\7\37\2\2./\7(\2"+
-		"\2/\60\7\f\2\2\60\61\5\20\t\2\61\62\b\3\1\2\62\63\7\7\2\2\63C\b\3\1\2"+
-		"\64\65\7(\2\2\65\66\7\f\2\2\66\67\5\20\t\2\67@\b\3\1\289\7\r\2\29:\7("+
-		"\2\2:;\7\f\2\2;<\5\20\t\2<=\b\3\1\2=?\3\2\2\2>8\3\2\2\2?B\3\2\2\2@>\3"+
+		")\5\16\b\2)*\7\25\2\2*+\5\6\4\2+,\b\3\1\2,Q\3\2\2\2-.\7\37\2\2./\7(\2"+
+		"\2/\60\7\f\2\2\60\61\5\16\b\2\61\62\b\3\1\2\62\63\7\7\2\2\63C\b\3\1\2"+
+		"\64\65\7(\2\2\65\66\7\f\2\2\66\67\5\16\b\2\67@\b\3\1\289\7\r\2\29:\7("+
+		"\2\2:;\7\f\2\2;<\5\16\b\2<=\b\3\1\2=?\3\2\2\2>8\3\2\2\2?B\3\2\2\2@>\3"+
 		"\2\2\2@A\3\2\2\2AD\3\2\2\2B@\3\2\2\2C\64\3\2\2\2CD\3\2\2\2DE\3\2\2\2E"+
 		"K\7\b\2\2FG\7\34\2\2GH\5\4\3\2HI\7\35\2\2IJ\b\3\1\2JL\3\2\2\2KF\3\2\2"+
 		"\2KL\3\2\2\2LM\3\2\2\2MN\5\6\4\2NO\b\3\1\2OQ\3\2\2\2P%\3\2\2\2P-\3\2\2"+

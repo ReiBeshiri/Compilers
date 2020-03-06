@@ -37,7 +37,7 @@ declist	returns [ArrayList<Node> astlist]
 	: {$astlist= new ArrayList<Node>() ;
 	   int offset=-2; }      
 	  ( (
-            VAR i=ID COLON t=type ASS e=exp 
+            VAR i=ID COLON t=hotype ASS e=exp 
             {VarNode v = new VarNode($i.text,$t.ast,$e.ast);  
              $astlist.add(v);                                 
              HashMap<String,STentry> hm = symTable.get(nestingLevel);
@@ -46,7 +46,7 @@ declist	returns [ArrayList<Node> astlist]
               stErrors++; }  
             }  
       |  
-            FUN i=ID COLON t=type
+            FUN i=ID COLON t=hotype //TODO SAREBBE TYPE MA DA ERROR (???)
               {//inserimento di ID nella symtable
                FunNode f = new FunNode($i.text,$t.ast);      
                $astlist.add(f);                              
@@ -61,7 +61,7 @@ declist	returns [ArrayList<Node> astlist]
                 symTable.add(hmn);
                 }
               LPAR {int paroffset=1;}
-                (fid=ID COLON fty=type
+                (fid=ID COLON fty=hotype
                   { 
                   parTypes.add($fty.ast);
                   ParNode fpar = new ParNode($fid.text,$fty.ast); //creo nodo ParNode
@@ -70,7 +70,7 @@ declist	returns [ArrayList<Node> astlist]
                    System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
                    stErrors++; }
                   }
-                  (COMMA id=ID COLON ty=type
+                  (COMMA id=ID COLON ty=hotype
                     {
                     parTypes.add($ty.ast);
                     ParNode par = new ParNode($id.text,$ty.ast);

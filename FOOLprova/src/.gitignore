@@ -15,3 +15,7 @@
 /FOOLParser.java
 /FOOLVisitor.java
 /FOOLlib.java
+/SVMVIS.tokens
+/SVMVISLexer.java
+/SVMVISLexer.tokens
+/SVMVISParser.java

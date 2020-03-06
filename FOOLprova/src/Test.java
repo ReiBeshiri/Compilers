@@ -1,4 +1,4 @@
-
+import java.nio.file.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import ast.*;
@@ -8,11 +8,12 @@ import org.antlr.v4.runtime.*;
 import ast.Node;
 import lib.FOOLlib;
 import lib.TypeException;
-
+import java.nio.file.*;
+import java.nio.file.*;
 public class Test {
     public static void main(String[] args) throws Exception {
       
-        String fileName = "linsum2.fool";
+        String fileName = "prova2.fool";
       
         CharStream chars = CharStreams.fromFileName(fileName);
         FOOLLexer lexer = new FOOLLexer(chars);
@@ -52,18 +53,23 @@ public class Test {
         System.out.println("Code generated! Assembling and running generated code.");
 
         CharStream charsASM = CharStreams.fromFileName(fileName+".asm");
-        SVMLexer lexerASM = new SVMLexer(charsASM);
+
+        SVMVISLexer lexerASM = new SVMVISLexer(charsASM);
+
         CommonTokenStream tokensASM = new CommonTokenStream(lexerASM);
-        SVMParser parserASM = new SVMParser(tokensASM);
-                
+
+        SVMVISParser parserASM = new SVMVISParser(tokensASM); 
+
         parserASM.assembly();
-        
-        System.out.println("You had: "+lexerASM.lexicalErrors+" lexical errors and "+parserASM.getNumberOfSyntaxErrors()+" syntax errors.\n");
+
+        System.out.println("You had: "+lexerASM.lexicalErrors+" lexical errors and "+parserASM.getNumberOfSyntaxErrors()+" syntax errors.");
         if (lexerASM.lexicalErrors>0 || parserASM.getNumberOfSyntaxErrors()>0) System.exit(1);
 
         System.out.println("Starting Virtual Machine...");
-        ExecuteVM vm = new ExecuteVM(parserASM.code);
+        VisualVM vm = new VisualVM(parserASM.code,parserASM.sourceMap,Files.readAllLines(Paths.get(fileName+".asm")));
+
         vm.cpu();
+        
        
     }
 }

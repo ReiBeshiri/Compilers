@@ -13,7 +13,7 @@ import java.nio.file.*;
 public class Test {
     public static void main(String[] args) throws Exception {
       
-        String fileName = "prova2.fool";
+        String fileName = "linsum.fool";
       
         CharStream chars = CharStreams.fromFileName(fileName);
         FOOLLexer lexer = new FOOLLexer(chars);

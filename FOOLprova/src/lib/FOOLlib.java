@@ -15,9 +15,9 @@ public class FOOLlib {
    * */
   //valuta se il tipo "a" è <= al tipo "b", dove "a" e "b" sono tipi di base: int o bool
   public static boolean isSubtype (Node a, Node b) {
-	boolean isSubtype=true;
+	boolean isSubtype=false;
 	if (a instanceof ArrowTypeNode && b instanceof ArrowTypeNode) {
-		
+		isSubtype=true;
 		//Controllo che il return value degli arrow type sia lo stesso
 		 ArrowTypeNode aArrow = (ArrowTypeNode) a;
 		 ArrowTypeNode bArrow = (ArrowTypeNode) b;

@@ -1,4 +1,4 @@
-if(1) non è consentito dal compilatore perchè 1 (la condizione) è inteso come int e non come bool... Va bene questa cosa?
-if(1 == 1) invece è ammesso perchè l'operatore uguale restituisce in ouput un nodo boool.
-
-Ricordo anche qui che 1 è inteso come TRUE, mentre tutti gli altri numeri sono FALSE.
+Siccome in getSymType() bisogna ritornare il tipo della variabile che è stato messo in SymbolTable, 
+bisogna passare il riferimento della SymTable alla classe (VarNode, FunNode, ParNode) oppure basta prendere
+il tipo con cui è stato richiamato il costruttore della classe (che è lo stesso che viene passato 
+alla SymTable nel file FOOL.g4)?

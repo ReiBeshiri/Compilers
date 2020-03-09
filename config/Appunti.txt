@@ -5,6 +5,11 @@ Nella grammatica del parser:
 Per tutti i simboli guardare il link.
 https://theantlrguy.atlassian.net/wiki/spaces/ANTLR3/pages/2687036/ANTLR+Cheat+Sheet
 
+if(1) non è consentito dal compilatore perchè 1 (la condizione) è inteso come int e non come bool... Va bene questa cosa?
+if(1 == 1) invece è ammesso perchè l'operatore uguale restituisce in ouput un nodo boool.
+
+Ricordo anche qui che 1 è inteso come TRUE, mentre tutti gli altri numeri sono FALSE.
+
 HOTYPE
 E' un tipo con cui dichiarare una variabile. 
 La dichiarazione può essere un tipo base (bool o int):

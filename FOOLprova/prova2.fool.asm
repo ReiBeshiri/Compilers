@@ -18,11 +18,11 @@ function0:
 cfp
 lra
 lfp
-push 2
+push 1
 add
 lw
 lfp
-push 3
+push 2
 add
 lw
 add

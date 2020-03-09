@@ -27,7 +27,7 @@ function0:
 cfp
 lra
 lfp
-push 3
+push 2
 add
 lw
 lfp
@@ -58,7 +58,7 @@ cfp
 lra
 push function0
 lfp
-push 2
+push 1
 add
 lw
 push 1

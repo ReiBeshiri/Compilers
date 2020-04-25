@@ -16,3 +16,7 @@
 /SimpleExpLexer.tokens
 /SimpleExpListener.java
 /SimpleExpParser.java
+/SVMVISBaseListener.java
+/SVMVISLexer.java
+/SVMVISListener.java
+/SVMVISParser.java

@@ -1,0 +1,13 @@
+Gestione degli offset
+
+FOOL.g4 riga 100
+Perchè viene rimossa l'hashmap alla fine della dichiarazione di una funzione?
+symTable.remove(nestingLevel--); 
+
+prova3.fool
+quando chiamo la print a riga 8 perchè sia 'g' che 'linsum' vengono considerate come ArrowTypeNode e non come Function?
+
+Siccome dobbiamo settare l'offset doppio per i parametri arrowtype abbiamo bisogno di capire il tipo del parametro...
+Come si fa? (instanceOf)
+
+Perchè provando non aumenta l'offset? Sembra che il codice scritto in FOOL.g4 non venga eseguito

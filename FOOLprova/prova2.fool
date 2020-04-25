@@ -1,4 +1,18 @@
 let 
-  fun f:int (i:int, j:int) i+j;
+  var x:int = 5;
+  
+  fun t:int (pippo:int)
+  	pippo + x;
+  
+  fun f:int (i:int, j:int)
+  	t(i+j);
+  	
+  fun g:int (y:int)
+  let
+  	var tmp:int = 0;
+  in 
+	t(tmp);
+  
 in
-  print (f(3,5));
+  print (f(3,5) + g(1));
+ 

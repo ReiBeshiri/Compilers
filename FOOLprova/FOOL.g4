@@ -38,55 +38,79 @@ declist	returns [ArrayList<Node> astlist]
 	   int offset=-2; }      
 	  ( (
             VAR i=ID COLON t=hotype ASS e=exp 
-            {VarNode v = new VarNode($i.text,$t.ast,$e.ast);  
-             $astlist.add(v);                                 
-             HashMap<String,STentry> hm = symTable.get(nestingLevel);
-             if ( hm.put($i.text,new STentry(nestingLevel,$t.ast,offset--)) != null  ) {
-              System.out.println("Var id "+$i.text+" at line "+$i.line+" already declared");
-              stErrors++; }  
+	        {
+	        	VarNode v = new VarNode($i.text,$t.ast,$e.ast);  
+	            $astlist.add(v);                                 
+	            HashMap<String,STentry> hm = symTable.get(nestingLevel);
+	            if ( hm.put($i.text,new STentry(nestingLevel,$t.ast,offset--)) != null  ) {
+	              System.out.println("Var id "+$i.text+" at line "+$i.line+" already declared");
+	              stErrors++; 
+	            }  
             }  
       |  
             FUN i=ID COLON t=hotype //TODO SAREBBE TYPE MA DA ERROR (???)
-              {//inserimento di ID nella symtable
-               FunNode f = new FunNode($i.text,$t.ast);      
-               $astlist.add(f);                              
-               HashMap<String,STentry> hm = symTable.get(nestingLevel);
-               ArrayList<Node> parTypes = new ArrayList<Node>();
-               if ( hm.put($i.text,new STentry(nestingLevel,new ArrowTypeNode(parTypes,$t.ast),offset--)) != null  ) {
-                System.out.println("Fun id "+$i.text+" at line "+$i.line+" already declared");
-                stErrors++; }
-                //creare una nuova hashmap per la symTable
+	        {	//inserimento di ID nella symtable
+	            //Creo un nodo funzione
+	            FunNode functionNode = new FunNode($i.text,$t.ast);
+	            //Aggiungo il nodo funzione all'ast   
+	            $astlist.add(functionNode);
+	            //Mi faccio dare la SymTable dello stesso livello in cui viene dichiarata la funzione                              
+	            HashMap<String,STentry> SymTableThisNestLev = symTable.get(nestingLevel);
+	            //Creo array per i parametri
+	            ArrayList<Node> parTypes = new ArrayList<Node>();
+	            //Controllo se esiste già la stessa funzione nella SymbolTable (il controllo restituisce null se NON c'è una funzione uguale)
+	            if ( SymTableThisNestLev.put( $i.text, new STentry(10, new ArrowTypeNode(parTypes,$t.ast),offset--)) != null  ) {
+	               System.out.println("Fun id "+$i.text+" at line "+$i.line+" already declared");
+	               stErrors++; 
+	            }
+                //Aggiorno il NestingLevel siccome sto entrando in una funzione 
                 nestingLevel++;
-                HashMap<String,STentry> hmn = new HashMap<String,STentry> ();
-                symTable.add(hmn);
+                //Creo la HashMap per la nuova funzone
+                HashMap<String,STentry> hashMapNewFunction = new HashMap<String,STentry> ();
+                symTable.add(hashMapNewFunction);
+           } 
+           LPAR {int paroffset=1;} 
+           (fid=ID COLON fty=hotype
+           { 
+           		//Aggiunge alla lista dei parametri il nodo relativo ad un parametro
+               	parTypes.add($fty.ast);
+               	//creo il nodo di un parametro
+                ParNode funParameter = new ParNode($fid.text,$fty.ast);
+                //aggiungo alla lista dei parametri della funzione un parametro
+                functionNode.addPar(funParameter);
+                //Aggiungo alla Hash Map le informazioni del parametro
+                if(funParameter.getSymType() instanceof ArrowTypeNode){
+                	if ( hashMapNewFunction.put($fid.text, new STentry(nestingLevel,$fty.ast,paroffset)) != null  ) { //Se c'è un parametro con lo stesso nome c'è un errore
+                   		System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
+                   		stErrors++; 
+                	}
+                	paroffset+=2;
+                } else {
+                	if ( hashMapNewFunction.put($fid.text, new STentry(nestingLevel,$fty.ast,paroffset++)) != null  ) { //Se c'è un parametro con lo stesso nome c'è un errore
+                   		System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
+                   		stErrors++; 
+                	}                
                 }
-              LPAR {int paroffset=1;}
-                (fid=ID COLON fty=hotype
-                  { 
-                  parTypes.add($fty.ast);
-                  ParNode fpar = new ParNode($fid.text,$fty.ast); //creo nodo ParNode
-                  f.addPar(fpar);                                 //lo attacco al FunNode con addPar
-                  if ( hmn.put($fid.text,new STentry(nestingLevel,$fty.ast,paroffset++)) != null  ) { //aggiungo dich a hmn
-                   System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
-                   stErrors++; }
-                  }
-                  (COMMA id=ID COLON ty=hotype
-                    {
+            }
+                (COMMA id=ID COLON ty=hotype {
+                	//Faccio la stessa cosa fatta sopra per ogni parametro della funzione
                     parTypes.add($ty.ast);
                     ParNode par = new ParNode($id.text,$ty.ast);
-                    f.addPar(par);
-                    if ( hmn.put($id.text,new STentry(nestingLevel,$ty.ast,paroffset++)) != null  ) {
-                     System.out.println("Parameter id "+$id.text+" at line "+$id.line+" already declared");
-                     stErrors++; }
+                    functionNode.addPar(par);
+                    if (hashMapNewFunction.put($id.text, new STentry(nestingLevel,$ty.ast,paroffset++)) != null  ) {
+                     	System.out.println("Parameter id "+$id.text+" at line "+$id.line+" already declared");
+                     	stErrors++; 
                     }
-                  )*
-                )? 
-              RPAR
-              (LET d=declist IN {f.addDec($d.astlist);})? e=exp
-              {f.addBody($e.ast);
-               //rimuovere la hashmap corrente poiché esco dallo scope               
-               symTable.remove(nestingLevel--);    
-              }
+                 } 
+                 )*
+           )? 
+           RPAR (LET d=declist IN {f.addDec($d.astlist);})? e=exp
+           {
+              functionNode.addBody($e.ast);
+              //rimuovere la hashmap corrente poiché esco dallo scope               
+              symTable.remove(nestingLevel); //COSAAAAAA???
+              nestingLevel--;
+           }
       ) SEMIC
     )+          
 	;

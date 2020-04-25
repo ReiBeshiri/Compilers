@@ -16,3 +16,17 @@ let
 in
   print (f(3,5) + g(1));
  
+ 
+ 
+
+  
+  
+  let
+
+  fun g:int(x:(int,int)->int, z:int)
+    x(1,2) + z;
+  
+  fun linsum:int(a:int,b:int)
+    a + b; 
+in
+  print(g(linsum, 3)); 

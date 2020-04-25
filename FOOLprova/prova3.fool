@@ -1,8 +1,13 @@
 let
-  fun g:int(x:(int,int)->int, z:int)
-    x(1,2) + z;
+  var ttt:int = 0;
+  
+  fun g:int(x:(int,int)->int, z:int , y:(int,int)->int, k:int)
+    x(1,2) + z + y(1,2) + k;
   
   fun linsum:int(a:int,b:int)
-    a+b; 
+    a + b;
+   
+   var tttt:int = 0;
+     
 in
-  print(g(linsum, 3));
+  print(g(linsum , ttt , linsum , tttt)); 

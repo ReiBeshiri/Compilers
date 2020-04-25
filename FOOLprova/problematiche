@@ -11,3 +11,5 @@ Siccome dobbiamo settare l'offset doppio per i parametri arrowtype abbiamo bisog
 Come si fa? (instanceOf)
 
 Perchè provando non aumenta l'offset? Sembra che il codice scritto in FOOL.g4 non venga eseguito
+
+Una variablie può eesere di tipo arrowtype node?? O solo le funzioni sono di tipo arrowtypeNode

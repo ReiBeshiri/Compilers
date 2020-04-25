@@ -39,19 +39,22 @@ declist	returns [ArrayList<Node> astlist]
 	  ( (
             VAR i=ID COLON t=hotype ASS e=exp 
 	        {
-	        	VarNode v = new VarNode($i.text,$t.ast,$e.ast);  
-	            $astlist.add(v);                                 
+	        	VarNode variable = new VarNode($i.text,$t.ast,$e.ast);  
+	            $astlist.add(variable);                                 
 	            HashMap<String,STentry> hm = symTable.get(nestingLevel);
 	            if ( hm.put($i.text,new STentry(nestingLevel,$t.ast,offset--)) != null  ) {
 	              System.out.println("Var id "+$i.text+" at line "+$i.line+" already declared");
 	              stErrors++; 
-	            }  
+	            }
+	            if(variable.getSymType() instanceof ArrowTypeNode){ //una var di tipo arrowtype node ha doppio offset
+                	  offset--;
+                }   
             }  
       |  
             FUN i=ID COLON t=hotype //TODO SAREBBE TYPE MA DA ERROR (???)
 	        {	//inserimento di ID nella symtable
 	            //Creo un nodo funzione
-	            FunNode functionNode = new FunNode($i.text,$t.ast);
+	            FunNode functionNode = new FunNode($i.text,$t.ast); 
 	            //Aggiungo il nodo funzione all'ast   
 	            $astlist.add(functionNode);
 	            //Mi faccio dare la SymTable dello stesso livello in cui viene dichiarata la funzione                              
@@ -59,10 +62,11 @@ declist	returns [ArrayList<Node> astlist]
 	            //Creo array per i parametri
 	            ArrayList<Node> parTypes = new ArrayList<Node>();
 	            //Controllo se esiste già la stessa funzione nella SymbolTable (il controllo restituisce null se NON c'è una funzione uguale)
-	            if ( SymTableThisNestLev.put( $i.text, new STentry(10, new ArrowTypeNode(parTypes,$t.ast),offset--)) != null  ) {
+	            if ( SymTableThisNestLev.put( $i.text, new STentry(nestingLevel, new ArrowTypeNode(parTypes,$t.ast),offset)) != null  ) {
 	               System.out.println("Fun id "+$i.text+" at line "+$i.line+" already declared");
 	               stErrors++; 
 	            }
+	            offset-=2; //tutte le funz sono di tipo arrowtypeNode quindi occupano offset doppio
                 //Aggiorno il NestingLevel siccome sto entrando in una funzione 
                 nestingLevel++;
                 //Creo la HashMap per la nuova funzone
@@ -79,32 +83,31 @@ declist	returns [ArrayList<Node> astlist]
                 //aggiungo alla lista dei parametri della funzione un parametro
                 functionNode.addPar(funParameter);
                 //Aggiungo alla Hash Map le informazioni del parametro
-                if(funParameter.getSymType() instanceof ArrowTypeNode){
-                	if ( hashMapNewFunction.put($fid.text, new STentry(nestingLevel,$fty.ast,paroffset)) != null  ) { //Se c'è un parametro con lo stesso nome c'è un errore
-                   		System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
-                   		stErrors++; 
-                	}
-                	paroffset+=2;
-                } else {
                 	if ( hashMapNewFunction.put($fid.text, new STentry(nestingLevel,$fty.ast,paroffset++)) != null  ) { //Se c'è un parametro con lo stesso nome c'è un errore
                    		System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
                    		stErrors++; 
-                	}                
-                }
-            }
+                	}
+                	if(funParameter.getSymType() instanceof ArrowTypeNode){
+                	  paroffset++;
+                	} 
+                	//System.out.println("HA FATTO LA STAMPA");
+            	}
                 (COMMA id=ID COLON ty=hotype {
                 	//Faccio la stessa cosa fatta sopra per ogni parametro della funzione
                     parTypes.add($ty.ast);
-                    ParNode par = new ParNode($id.text,$ty.ast);
-                    functionNode.addPar(par);
+                    ParNode otherFunParameter = new ParNode($id.text,$ty.ast);
+                    functionNode.addPar(otherFunParameter);
                     if (hashMapNewFunction.put($id.text, new STentry(nestingLevel,$ty.ast,paroffset++)) != null  ) {
                      	System.out.println("Parameter id "+$id.text+" at line "+$id.line+" already declared");
                      	stErrors++; 
                     }
+                    if(otherFunParameter.getSymType() instanceof ArrowTypeNode){
+                	  paroffset++;
+                	}
                  } 
                  )*
            )? 
-           RPAR (LET d=declist IN {f.addDec($d.astlist);})? e=exp
+           RPAR (LET d=declist IN {functionNode.addDec($d.astlist);})? e=exp
            {
               functionNode.addBody($e.ast);
               //rimuovere la hashmap corrente poiché esco dallo scope               

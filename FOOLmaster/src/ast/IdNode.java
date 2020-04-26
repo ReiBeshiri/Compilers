@@ -21,7 +21,7 @@ public class IdNode implements Node {
 
   public Node typeCheck() throws TypeException {
 	if (entry.getType() instanceof ArrowTypeNode) 
-		throw new TypeException("Wrong usage of function identifier "+id);
+		throw new TypeException("PROVA COMMENTOWrong usage of function identifier "+id);
 	return entry.getType();
   }
   

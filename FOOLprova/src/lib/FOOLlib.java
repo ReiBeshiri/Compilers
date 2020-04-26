@@ -18,26 +18,24 @@ public class FOOLlib {
 	boolean isSubtype=false;
 	if (a instanceof ArrowTypeNode && b instanceof ArrowTypeNode) {
 		isSubtype=true;
-		//Controllo che il return value degli arrow type sia lo stesso
-		 ArrowTypeNode aArrow = (ArrowTypeNode) a;
-		 ArrowTypeNode bArrow = (ArrowTypeNode) b;
-		 isSubtype = isSubtype(aArrow.getRet(), bArrow.getRet());
-		
-		//Controllo che il size della lista dei parametri sia la stessa len (Covariance)
-		 List<Node> listParA = aArrow.getParList();
-		 List<Node> listParB = bArrow.getParList();
-		 if(listParA.size() != listParB.size()) {isSubtype=false;}
-		 
+		//Ottengo l'istanza di ogni Arrowtype
+		ArrowTypeNode aArrow = (ArrowTypeNode) a;
+		ArrowTypeNode bArrow = (ArrowTypeNode) b;
+		//Controllo che abbiano lo stesso numero di parametri
+		List<Node> listParA = aArrow.getParList();
+		List<Node> listParB = bArrow.getParList();
+		if(listParA.size() != listParB.size()) {isSubtype=false;}
+		//Covarianza sul tipo di ritorno
+		isSubtype = isSubtype(aArrow.getRet(), bArrow.getRet());
 		//Controllo che il tipo di ogni parametro del nodo A e del nodo B sia lo stesso (Contravariance)
-		 for(int i=0; i<listParA.size(); i++) {
-			 isSubtype = isSubtype && isSubtype(listParB.get(i), listParA.get(i));
-		 }
-		 
+		for(int i=0; i<listParA.size(); i++) {
+			isSubtype = isSubtype && isSubtype(listParB.get(i), listParA.get(i));
+		}
 	}
 	else {
 		
 		isSubtype = a.getClass().equals(b.getClass()) || ( (a instanceof BoolTypeNode) && (b instanceof IntTypeNode) );
-	
+			
 	}
 	    	 
 	return isSubtype;

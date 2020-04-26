@@ -20,8 +20,8 @@ public class IdNode implements Node {
   }
 
   public Node typeCheck() throws TypeException {
-	if (entry.getType() instanceof ArrowTypeNode) 
-		throw new TypeException("Wrong usage of function identifier "+id);
+	  //ora id ammette tipi anche funzionali (arrowtype), questo if dava errore con ogni id di tipo funzionale
+	//if (entry.getType() instanceof ArrowTypeNode) throw new TypeException("Wrong usage of function identifier "+id);
 	return entry.getType();
   }
   

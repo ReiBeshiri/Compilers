@@ -19,3 +19,5 @@
 /SVMVISLexer.java
 /SVMVISLexer.tokens
 /SVMVISParser.java
+/SVMVISBaseListener.java
+/SVMVISListener.java

@@ -37,7 +37,7 @@ public class Test {
           System.out.print(type.toPrint("Type of main program expression is: ")); 
           }
           catch (TypeException e) {
-        	System.out.println("Type checking error in main program expression: "+e.text); 
+        	System.out.println("Type checking error in main program expression: "+e.text);  
           }       	
           System.out.println("You had: "+FOOLlib.typeErrors+" type checking errors.\n");
           errors=FOOLlib.typeErrors;

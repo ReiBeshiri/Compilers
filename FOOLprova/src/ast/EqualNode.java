@@ -19,7 +19,6 @@ public class EqualNode implements Node {
   public Node typeCheck() throws TypeException {
 	if (left instanceof ArrowTypeNode || right instanceof ArrowTypeNode)
 		throw new TypeException("ArrowTypeNode not allowed in equal");
-	//TODO vedi se slide 12 equal node lo fa in automatico.
 	Node l= left.typeCheck();  
 	Node r= right.typeCheck();  
     if ( !(FOOLlib.isSubtype(l, r) || FOOLlib.isSubtype(r, l)) ) 

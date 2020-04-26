@@ -49,7 +49,7 @@ declist	returns [ArrayList<Node> astlist]
 	            if(variable.getSymType() instanceof ArrowTypeNode){ //una var di tipo arrowtype node ha doppio offset
                 	  offset--;
                 }   
-            }  
+            } 
       |  
             FUN i=ID COLON t=hotype //TODO SAREBBE TYPE MA DA ERROR (???)
 	        {	//inserimento di ID nella symtable

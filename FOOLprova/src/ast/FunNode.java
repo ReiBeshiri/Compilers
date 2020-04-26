@@ -53,13 +53,21 @@ public class FunNode implements DecNode {
   }
 	     
   public String codeGeneration() {
-	  
+	  //agiiunto l'if dove verifico se il nodo è di tipo arrowtype e nel caso faccio due pop.
 	  String declCode="", popDecl="", popParl="";
 	  for (Node dec:declist) {
-		    declCode+=dec.codeGeneration();	    
-	    	popDecl+="pop\n"; }
-	  for (Node par:parlist)
-	    	popParl+="pop\n";
+		    declCode+=dec.codeGeneration();	
+		    popDecl+="pop\n"; 
+		    if(dec instanceof ArrowTypeNode) {
+		    	popDecl+="pop\n"; 
+		    }
+	  }
+	  for (Node par:parlist) {
+	    	popParl+="pop\n"; 
+	    	if(par instanceof ArrowTypeNode) {
+	    		popParl+="pop\n";
+	    	}
+	  }
 	  
 	  String funl=FOOLlib.freshFunLabel();
 	  FOOLlib.putCode(
@@ -77,7 +85,7 @@ public class FunNode implements DecNode {
 	    		"ltm\n"+ // push $tm value (function result)
 	    		"lra\n"+"js\n" // jump to $ra value
 			  );	  
-	  return "push "+ funl +"\n";
+	  return "lfp "+"\n" + "push "+ funl +"\n";
   }
 
   public Node getSymType() {

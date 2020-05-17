@@ -2,6 +2,7 @@ push 0
 push 5
 push 2
 add
+lfp 
 push function1
 lfp
 push 1
@@ -56,6 +57,7 @@ js
 function1:
 cfp
 lra
+lfp 
 push function0
 lfp
 push 1

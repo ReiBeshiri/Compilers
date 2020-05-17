@@ -1,4 +1,5 @@
-let
+
+/*let
   var y:int = 5+2;
   fun g:bool (b:bool)
     let 
@@ -13,7 +14,7 @@ in
       then { false }
       else { 10 }
   ); 
-/* SERBATOIO ESEMPI
+ SERBATOIO ESEMPI
 let 
   var x:int = 1;
   var b:bool = true;

@@ -85,7 +85,10 @@ public class FunNode implements DecNode {
 	    		"ltm\n"+ // push $tm value (function result)
 	    		"lra\n"+"js\n" // jump to $ra value
 			  );	  
-	  return "lfp "+"\n" + "push "+ funl +"\n";
+	  return  "lfp\n"+ 
+	  		"push 333\n"+ //DEBUG
+	  		"pop\n"+
+	  	    "push "+ funl +"\n";
   }
 
   public Node getSymType() {

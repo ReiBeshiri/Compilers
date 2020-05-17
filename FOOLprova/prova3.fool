@@ -1,4 +1,52 @@
 let
+
+  fun g:int(x:(int,int)->int, z:int)
+    x(17,27) + z;
+  
+  fun linsum:int(a:int,b:int)
+    a + b; 
+in
+  print(g(linsum, 37)); 
+
+/* let
+
+  fun g:int(x:(int,int)->int, z:int)
+    x(17,27) + z;
+  
+  fun linsum:int(a:int,b:int)
+    a + b; 
+in
+  print(g(linsum, 37)); 
+
+ let 
+  var x:int = 1;
+  var b:bool = true;
+in
+  print (if (b || false) then { x+1 } else { x+2 });
+
+ let
+  var y:int = 7;
+  fun g:bool (b:bool)
+    if b then { true } else { false };
+in  
+  print ( 
+    if g(false) 
+      then { false }
+      else { 10 }
+  );
+
+
+ let
+	var x:int = 10;
+	fun f:int (a:int)
+		let
+			var y:int = 5;
+		in
+			a+y;
+in
+	print(x + f(3));
+		
+ let
   var ttt:int = 0;
   
   fun g:int(x:(int,int)->int, z:int , y:(int,int)->int, k:int)
@@ -10,4 +58,6 @@ let
    var tttt:int = 0;
      
 in
-  print(g(linsum , ttt , linsum , tttt)); 
+  print(g(linsum , ttt , linsum , tttt)); */
+  
+  

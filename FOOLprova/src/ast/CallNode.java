@@ -46,16 +46,36 @@ public class CallNode implements Node {
 	  for (int i=parlist.size()-1;i>=0;i--)
 		  parCode += parlist.get(i).codeGeneration();
 	  for (int i=0; i<nestingLevel-entry.getNestingLevel();i++)
-		  getAR+="lw\n";	  
-	  return "lfp\n"+ // push Control Link (pointer to frame of function id caller)
-	         parCode+ // generate code for parameter expressions in reversed order
-	         "lfp\n"+
-                getAR+ // push Access Link (pointer to frame of function id declaration, reached as for variable id)
-	         "stm\n"+"ltm\n"+"ltm\n"+ // duplicate top of the stack
-	         "push "+entry.getOffset()+"\n"+
-			    "add\n"+
-                "lw\n"+ // push function address (value at: pointer to frame of function id declaration + its offset)
-	         "js\n"// jump to popped address (putting in $ra address of subsequent instruction)
+		  getAR+="lw\n";
+	  if(entry.getType() instanceof ArrowTypeNode) {
+		 return "lfp\n"+ 						 // push Control Link (pointer to frame of function id caller)
+				"push 223\n"+ //CALL NODE ARROW
+				"pop\n"+
+			     parCode+ 						 // generate code for parameter expressions in reversed order
+			     "lfp\n"+
+		         getAR+ 						 // push Access Link (pointer to frame of function id declaration, reached as for variable id)
+			     "stm\n"+"ltm\n"+"ltm\n"+ 		 // duplicate top of the stack
+			     "push "+entry.getOffset()+"\n"+ //indir (fp) ad AR dichiaraz. funzione (recuperato a offset ID) usato per settare nuovo Access Link (AL)
+				 "add\n"+
+		         "lw\n"+ 						 // push function address (value at: pointer to frame of function id declaration + its offset)
+				 "lfp\n"+	//TODO MODIFICATO, PROVA
+		         "push "+ (entry.getOffset() - 1)+"\n"+ // indir funzione (recuperato a offset ID - 1) usato per saltare a codice funzione
+				 "add\n"+
+		         "lw\n"+
+			     "js\n"							 // jump to popped address (putting in $ra address of subsequent instruction)
+			   ;  
+	  }
+	  return  "lfp\n"+ 						 // push Control Link (pointer to frame of function id caller)
+	  		  "push 222\n"+ //CALL NODE
+	  		  "pop\n"+
+	          parCode+ 						 // generate code for parameter expressions in reversed order
+	          "lfp\n"+
+              getAR+ 						 // push Access Link (pointer to frame of function id declaration, reached as for variable id)
+	          "stm\n"+"ltm\n"+"ltm\n"+ 		 // duplicate top of the stack
+	          "push "+entry.getOffset()+"\n"+ //indir (fp) ad AR dichiaraz. funzione (recuperato a offset ID)
+			  "add\n"+
+              "lw\n"+ 						 // push function address (value at: pointer to frame of function id declaration + its offset)
+	          "js\n"							 // jump to popped address (putting in $ra address of subsequent instruction)
 	   ;
   }
     

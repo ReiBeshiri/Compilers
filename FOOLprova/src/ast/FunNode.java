@@ -58,13 +58,14 @@ public class FunNode implements DecNode {
 	  for (Node dec:declist) {
 		    declCode+=dec.codeGeneration();	
 		    popDecl+="pop\n"; 
-		    if(dec instanceof ArrowTypeNode) {
+		    if(((DecNode) dec).getSymType() instanceof ArrowTypeNode) {
 		    	popDecl+="pop\n"; 
 		    }
 	  }
 	  for (Node par:parlist) {
 	    	popParl+="pop\n"; 
-	    	if(par instanceof ArrowTypeNode) {
+	    	//Bisogna utilizzare il getSymType del ParNode
+	    	if(((DecNode) par).getSymType() instanceof ArrowTypeNode) {
 	    		popParl+="pop\n";
 	    	}
 	  }
@@ -75,7 +76,11 @@ public class FunNode implements DecNode {
 			    "cfp\n"+ //set $fp to $sp value				
 				"lra\n"+ //push $ra value
 	    		declCode+ //generate code for local declarations (they use the new $fp!!!)
+	    		"push 441\n"+
+	    		"pop\n"+
 	    		exp.codeGeneration()+//generate code for function body expression
+	    		"push 442\n"+
+	    		"pop\n"+
 	    		"stm\n"+ //set $tm to popped value (function result)
 	    		popDecl+ // remove local declarations from stack
 	    		"sra\n"+ // set $ra to popped value

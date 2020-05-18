@@ -1,5 +1,4 @@
 let
-
   fun g:int(x:(int,int)->int, z:int)
     x(17,27) + z;
   

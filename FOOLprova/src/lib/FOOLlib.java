@@ -62,6 +62,7 @@ public class FOOLlib {
   public static String getCode() { 
     return funCode;
   } 
-
+  
+  public static int prova = 0;
   
 }

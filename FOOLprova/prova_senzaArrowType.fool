@@ -1,0 +1,88 @@
+/* FUNZIONA */
+/* let
+  fun linsum:int(a:int,b:int)
+    a + b; 
+in
+  print(linsum(13, 27)); */
+  
+
+/* FUNZIONA */
+/* let
+	fun linsum2:int(x:int)
+        x * 2;
+        
+    var z:(int)->int = linsum2;
+	
+    fun linsum:int(x:int)
+        z(x) + 10;
+        
+    var y:(int)->int = linsum;
+in
+    print(y(15)); */
+
+/* FUNZIONA */   
+/* let
+	fun linsum:int(a:int,b:int)
+    	a + b; 
+    	
+   	var y:(int, int)->int = linsum;
+	
+  	fun g:int(x:int, z:int)
+    	y(x, z);
+  
+in
+  	print(g(13,27)); */
+  	
+/* L'ERRORE AVVIENE QUANDO UTILIZZO UN ARROWTYPENODE COME PARAMETRO */
+/* let
+	fun linsum:int(a:int,b:int)
+    	a + b;
+    	
+    var y:(int, int)->int = linsum;
+    
+  	fun g:int(x:(int,int)->int)
+  		y(130, 270);
+  
+in
+  print(g(y)); */
+  
+ /* let
+	fun linsum:int(a:int,b:int)
+    	a + b;
+    	
+    var y:(int, int)->int = linsum;
+    
+	
+  	fun g:int(x:(int,int)->int)
+    	x(130,270);
+  
+in
+  print(g(y)); */
+	
+
+/* Passo una funzione senza utilizzare una variabile */
+/* riga 85: ci potrebbe essere un lw di troppo */
+let
+
+    fun linsum:int(a:int,b:int)
+    	a + b;
+    
+    fun linsum2:int(a:int,b:int)
+    	a * b;
+    	
+	fun g:int(x:(int,int)->int, c:(int,int)->int)
+    	x(130,270) + c(10,10);
+    	
+in
+  print(g(linsum, linsum2));
+  
+/* let
+	fun linsum:int(a:int,b:int)
+    	a + b;
+    	
+  	fun g:int(x:int)
+    	linsum(13, 27) + x;
+  
+in
+  print(g(10)); */
+	

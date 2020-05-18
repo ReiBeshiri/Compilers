@@ -10,10 +10,12 @@ import lib.FOOLlib;
 import lib.TypeException;
 import java.nio.file.*;
 import java.nio.file.*;
+
 public class Test {
+	
     public static void main(String[] args) throws Exception {
       
-        String fileName = "prova3.fool";
+        String fileName = "prova_senzaArrowType.fool";
       
         CharStream chars = CharStreams.fromFileName(fileName);
         FOOLLexer lexer = new FOOLLexer(chars);

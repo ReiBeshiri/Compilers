@@ -1,11 +1,11 @@
-grammar FOOL;
+grammar FOOL; 
 
 @header{
 import java.util.ArrayList;
 import java.util.HashMap;
 import ast.*;
 }
-
+ 
 @parser::members{
 int stErrors=0;
 

@@ -56,16 +56,18 @@ public class FunNode implements DecNode {
 	  //agiiunto l'if dove verifico se il nodo è di tipo arrowtype e nel caso faccio due pop.
 	  String declCode="", popDecl="", popParl="";
 	  for (Node dec:declist) {
-		    declCode+=dec.codeGeneration();	
-		    popDecl+="pop\n"; 
-		    if(((DecNode) dec).getSymType() instanceof ArrowTypeNode) {
+		    declCode+=dec.codeGeneration();	//SE DENTRO LA FUNZIONE DICHIARO UNA VARIABILE DEVO FARE UNA SOLA "POP"
+		    popDecl+="push 888\n"+			//ALTRIMENTI SE DICHIARO UNA FUNZIONE DEVO FARE DUE POP
+		    		"pop\n"+
+		    		"pop\n"; 
+		    if(dec instanceof FunNode) {
 		    	popDecl+="pop\n"; 
 		    }
 	  }
 	  for (Node par:parlist) {
 	    	popParl+="pop\n"; 
 	    	//Bisogna utilizzare il getSymType del ParNode
-	    	if(((DecNode) par).getSymType() instanceof ArrowTypeNode) {
+	    	if(((ParNode) par).getSymType() instanceof ArrowTypeNode) {
 	    		popParl+="pop\n";
 	    	}
 	  }

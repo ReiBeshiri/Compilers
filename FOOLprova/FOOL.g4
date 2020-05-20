@@ -22,7 +22,7 @@ int lexicalErrors=0;
 /*------------------------------------------------------------------
  * PARSER RULES
  *------------------------------------------------------------------*/
- prog returns [Node ast]
+prog returns [Node ast]
 	: {HashMap<String,STentry> hm = new HashMap<String,STentry> ();
        symTable.add(hm);}          
 	  ( e=exp 	
@@ -62,7 +62,7 @@ declist	returns [ArrayList<Node> astlist]
 	            //Creo array per i parametri
 	            ArrayList<Node> parTypes = new ArrayList<Node>();
 	            //Controllo se esiste già la stessa funzione nella SymbolTable (il controllo restituisce null se NON c'è una funzione uguale)
-	            if ( SymTableThisNestLev.put( $i.text, new STentry(nestingLevel, new ArrowTypeNode(parTypes,$t.ast),offset)) != null  ) {
+	            if ( SymTableThisNestLev.put( $i.text, new STentry(nestingLevel, new ArrowTypeNode(parTypes,$t.ast, true),offset)) != null  ) {
 	               System.out.println("Fun id "+$i.text+" at line "+$i.line+" already declared");
 	               stErrors++; 
 	            }
@@ -183,7 +183,7 @@ value	returns [Node ast]
 	   	 	(COMMA a=exp {arglist.add($a.ast);} )*
 	   	 )? 
 	   	 RPAR
-	   	 {$ast= new CallNode($i.text,entry,arglist,nestingLevel);} 
+	   	 {$ast= new CallNode($i.text,entry,arglist,nestingLevel);} //ATTENZIONEEEEEEEEE
 	   )?
  	; 
  	
@@ -210,7 +210,7 @@ arrow returns [Node ast] :
 		}
 	)* 
 	)? RPAR ARROW t=type {
-		$ast = new ArrowTypeNode(parArrowTypes, $t.ast);
+		$ast = new ArrowTypeNode(parArrowTypes, $t.ast, false);
 	} ;
   		
 /*------------------------------------------------------------------

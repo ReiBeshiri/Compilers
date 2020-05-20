@@ -24,5 +24,10 @@ public class ParNode implements DecNode {
   public Node getSymType() {
 	return type;
   }
+  
+  //DA CANCELLARE
+  public String getName() {
+	  return id;
+  }
 
 }  

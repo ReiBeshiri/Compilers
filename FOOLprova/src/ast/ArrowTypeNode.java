@@ -5,12 +5,18 @@ public class ArrowTypeNode implements Node {
 
   private ArrayList<Node> parlist;
   private Node ret;
+  private boolean isFunction;
   
-  public ArrowTypeNode (ArrayList<Node> p, Node r) {
+  public ArrowTypeNode (ArrayList<Node> p, Node r, boolean isFunction) {
    parlist=p;
    ret=r;
+   this.isFunction = isFunction;
   }
-
+  
+  public boolean isFunction() {
+	  return isFunction;
+  }
+  
   public Node getRet () { 
 	    return ret;
   }

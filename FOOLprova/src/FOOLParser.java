@@ -272,7 +272,7 @@ public class FOOLParser extends Parser {
 						            //Creo array per i parametri
 						            ArrayList<Node> parTypes = new ArrayList<Node>();
 						            //Controllo se esiste gi� la stessa funzione nella SymbolTable (il controllo restituisce null se NON c'� una funzione uguale)
-						            if ( SymTableThisNestLev.put( (((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null), new STentry(nestingLevel, new ArrowTypeNode(parTypes,((DeclistContext)_localctx).t.ast),offset)) != null  ) {
+						            if ( SymTableThisNestLev.put( (((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null), new STentry(nestingLevel, new ArrowTypeNode(parTypes,((DeclistContext)_localctx).t.ast, true),offset)) != null  ) {
 						               System.out.println("Fun id "+(((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null)+" at line "+(((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getLine():0)+" already declared");
 						               stErrors++; 
 						            }
@@ -989,7 +989,7 @@ public class FOOLParser extends Parser {
 			setState(231); match(ARROW);
 			setState(232); ((ArrowContext)_localctx).t = type();
 
-					((ArrowContext)_localctx).ast =  new ArrowTypeNode(parArrowTypes, ((ArrowContext)_localctx).t.ast);
+					((ArrowContext)_localctx).ast =  new ArrowTypeNode(parArrowTypes, ((ArrowContext)_localctx).t.ast, false);
 				
 			}
 		}

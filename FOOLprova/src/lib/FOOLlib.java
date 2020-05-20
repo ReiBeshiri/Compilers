@@ -63,6 +63,4 @@ public class FOOLlib {
     return funCode;
   } 
   
-  public static int prova = 0;
-  
 }

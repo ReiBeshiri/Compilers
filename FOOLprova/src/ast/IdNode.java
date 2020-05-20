@@ -50,6 +50,8 @@ public class IdNode implements Node {
 		 		"pop\n"+
                 getAR+ //risalgo la catena statica degli AL per ottenere 
                        //l'indirizzo dell'AR che contiene la dichiarazione di id 
+               "push 1111\n"+ //ID NODE
+		 		"pop\n"+
              "push "+entry.getOffset()+"\n"+
 			 "add\n"+
              "lw\n";

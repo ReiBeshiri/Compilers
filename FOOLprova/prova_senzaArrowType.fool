@@ -62,7 +62,7 @@ in
 
 /* Passo una funzione senza utilizzare una variabile */
 /* riga 85: ci potrebbe essere un lw di troppo */
-let
+/* let
 
     fun linsum:int(a:int,b:int)
     	a + b;
@@ -74,15 +74,93 @@ let
     	x(130,270) + c(10,10);
     	
 in
-  print(g(linsum, linsum2));
+  print(g(linsum, linsum2)); */
   
+/* FUNZIONA */
 /* let
-	fun linsum:int(a:int,b:int)
+    fun linsum:int(a:int,b:int)
     	a + b;
+    
+    fun linsum2:int(a:int,b:int)
+    	a * b;
     	
-  	fun g:int(x:int)
-    	linsum(13, 27) + x;
-  
+	fun g:int(x:(int,int)->int, c:(int,int)->int)
+    	x(130,270) + c(10,10);
+    	
+    fun g2:int(x2:(int,int)->int, c2:(int,int)->int)
+    	x2(10,10) + c2(130,270);
+    	
 in
-  print(g(10)); */
+  print(g(linsum, linsum2) + g2(linsum2, linsum)); */
+ 
+/* FUNZIONAAAA */
+/* let
+    fun linsum:int(a:int,b:int)
+    	a + b;
+   	
+   	fun linsum2:int(a:int,b:int)
+    	a * b;
+    
+	fun g:int(x:(int,int)->int, v:(int,int)->int)
+		let
+			fun linsum3:int(a2:int,b2:int)
+    			a2 + b2 + v(200,10);
+		in 
+    		x(130,270) + linsum3(150,150);
+    	
+in
+  print(g(linsum, linsum2)); */
+  
+/* FUNZIONA (linsum3 utilizza la variabile v con nestinglevel minore) */  
+/* let
+    fun linsum:int(a:int,b:int)
+    	a + b;
+   	
+   	fun linsum2:int(a:int,b:int)
+    	a * b;
+    
+	fun g:int(x:(int,int)->int, v:int)
+		let
+			fun linsum3:int(a2:int,b2:int)
+    			a2 + b2 + v;
+		in 
+    		x(130,270) + linsum3(150,150);
+    	
+in
+  print(g(linsum, 3000)); */
+
+let
+    fun linsum:int(a:int,b:int)
+    	a + b;
+   	
+   	fun linsum2:int(x:(int,int)->int)
+    	x(150,150);
+    
+	fun g:int(x:(int,int)->int, v:int)
+		let
+			fun linsum3:int(a2:int,b2:int)
+    			a2 + b2 + v;
+		in 
+    		/* x(130,270) + linsum2(linsum3); */
+    		x(130,270) + linsum3(150,150);
+    	
+in
+  print(g(linsum, 3000));
+
+  
+/* NON FUNZIONA */
+/* let
+  var t:int = 800;
+
+  fun g:int(x:(int,int)->int)
+    x(500,700);
+    
+  fun f:int(p: int, c:int)
+    let
+      fun linsum:int(a:int,b:int)
+        (a+b) + c;      
+    in 
+      g(linsum);   
+in
+  print(f(888)); */
 	

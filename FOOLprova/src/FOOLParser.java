@@ -300,13 +300,13 @@ public class FOOLParser extends Parser {
 						                //aggiungo alla lista dei parametri della funzione un parametro
 						                functionNode.addPar(funParameter);
 						                //Aggiungo alla Hash Map le informazioni del parametro
+						                	if(funParameter.getSymType() instanceof ArrowTypeNode){
+						                	  paroffset++;
+						                	}
 						                	if ( hashMapNewFunction.put((((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null), new STentry(nestingLevel,((DeclistContext)_localctx).fty.ast,paroffset++)) != null  ) { //Se c'� un parametro con lo stesso nome c'� un errore
 						                   		System.out.println("Parameter id "+(((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null)+" at line "+(((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getLine():0)+" already declared");
 						                   		stErrors++; 
 						                	}
-						                	if(funParameter.getSymType() instanceof ArrowTypeNode){
-						                	  paroffset++;
-						                	} 
 						                	//System.out.println("HA FATTO LA STAMPA");
 						            	
 						setState(62);
@@ -324,13 +324,13 @@ public class FOOLParser extends Parser {
 							                    parTypes.add(((DeclistContext)_localctx).ty.ast);
 							                    ParNode otherFunParameter = new ParNode((((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null),((DeclistContext)_localctx).ty.ast);
 							                    functionNode.addPar(otherFunParameter);
+							                    if(otherFunParameter.getSymType() instanceof ArrowTypeNode){
+							                	  paroffset++;
+							                	}
 							                    if (hashMapNewFunction.put((((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null), new STentry(nestingLevel,((DeclistContext)_localctx).ty.ast,paroffset++)) != null  ) {
 							                     	System.out.println("Parameter id "+(((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null)+" at line "+(((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getLine():0)+" already declared");
 							                     	stErrors++; 
 							                    }
-							                    if(otherFunParameter.getSymType() instanceof ArrowTypeNode){
-							                	  paroffset++;
-							                	}
 							                 
 							}
 							}

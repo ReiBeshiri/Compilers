@@ -1,22 +1,16 @@
 push 0
-lfp
-push 333
-pop
-push function0
+push 800
 lfp
 push 333
 pop
 push function1
-lfp
-push 333
-pop
-push function3
-lfp
 push 222
 pop
-push 3000
 lfp
-push 112
+lfp
+push 111
+pop
+push 1111
 pop
 push -2
 add
@@ -26,13 +20,7 @@ push -3
 add
 lw
 lfp
-stm
-ltm
-ltm
-push -6
-add
-lw
-push -7
+push -4
 add
 lw
 js
@@ -61,6 +49,16 @@ push 2
 add
 lw
 add
+lfp
+push 111
+pop
+lw
+push 1111
+pop
+push 1
+add
+lw
+add
 push 442
 pop
 stm
@@ -76,120 +74,26 @@ js
 function1:
 cfp
 lra
-push 441
-pop
-lfp
-push 223
-pop
-push 150
-push 150
-lfp
-stm
-ltm
-ltm
-push 1
-add
-lw
-push 777
-pop
-js
-push 442
-pop
-stm
-sra
-pop
-pop
-pop
-sfp
-ltm
-lra
-js
-
-function2:
-cfp
-lra
-push 441
-pop
-lfp
-push 111
-pop
-push 1111
-pop
-push 1
-add
-lw
-lfp
-push 111
-pop
-push 1111
-pop
-push 2
-add
-lw
-add
-lfp
-push 111
-pop
-lw
-push 1111
-pop
-push 3
-add
-lw
-add
-push 442
-pop
-stm
-sra
-pop
-pop
-pop
-sfp
-ltm
-lra
-js
-
-function3:
-cfp
-lra
 lfp
 push 333
 pop
-push function2
+push function0
 push 441
 pop
-lfp
-push 223
-pop
-push 270
-push 130
-lfp
-stm
-ltm
-ltm
-push 1
-add
-lw
-push 777
-pop
-js
-lfp
 push 222
 pop
-push 150
-push 150
 lfp
-stm
-ltm
-ltm
+push 700
+push 500
+lfp
 push -2
 add
 lw
+lfp
 push -3
 add
 lw
 js
-add
 push 442
 pop
 stm
@@ -198,8 +102,6 @@ pop
 pop
 pop
 sra
-pop
-pop
 pop
 pop
 sfp

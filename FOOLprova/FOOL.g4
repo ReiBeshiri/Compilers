@@ -83,13 +83,13 @@ declist	returns [ArrayList<Node> astlist]
                 //aggiungo alla lista dei parametri della funzione un parametro
                 functionNode.addPar(funParameter);
                 //Aggiungo alla Hash Map le informazioni del parametro
+                	if(funParameter.getSymType() instanceof ArrowTypeNode){
+                	  paroffset++;
+                	}
                 	if ( hashMapNewFunction.put($fid.text, new STentry(nestingLevel,$fty.ast,paroffset++)) != null  ) { //Se c'è un parametro con lo stesso nome c'è un errore
                    		System.out.println("Parameter id "+$fid.text+" at line "+$fid.line+" already declared");
                    		stErrors++; 
                 	}
-                	if(funParameter.getSymType() instanceof ArrowTypeNode){
-                	  paroffset++;
-                	} 
                 	//System.out.println("HA FATTO LA STAMPA");
             	}
                 (COMMA id=ID COLON ty=hotype {
@@ -97,13 +97,13 @@ declist	returns [ArrayList<Node> astlist]
                     parTypes.add($ty.ast);
                     ParNode otherFunParameter = new ParNode($id.text,$ty.ast);
                     functionNode.addPar(otherFunParameter);
+                    if(otherFunParameter.getSymType() instanceof ArrowTypeNode){
+                	  paroffset++;
+                	}
                     if (hashMapNewFunction.put($id.text, new STentry(nestingLevel,$ty.ast,paroffset++)) != null  ) {
                      	System.out.println("Parameter id "+$id.text+" at line "+$id.line+" already declared");
                      	stErrors++; 
                     }
-                    if(otherFunParameter.getSymType() instanceof ArrowTypeNode){
-                	  paroffset++;
-                	}
                  } 
                  )*
            )? 

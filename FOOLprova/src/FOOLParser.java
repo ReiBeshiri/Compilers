@@ -152,6 +152,9 @@ public class FOOLParser extends Parser {
 		public List<ExpContext> exp() {
 			return getRuleContexts(ExpContext.class);
 		}
+		public TypeContext type(int i) {
+			return getRuleContext(TypeContext.class,i);
+		}
 		public TerminalNode ID(int i) {
 			return getToken(FOOLParser.ID, i);
 		}
@@ -173,6 +176,9 @@ public class FOOLParser extends Parser {
 			return getToken(FOOLParser.LPAR, i);
 		}
 		public List<TerminalNode> COMMA() { return getTokens(FOOLParser.COMMA); }
+		public List<TypeContext> type() {
+			return getRuleContexts(TypeContext.class);
+		}
 		public TerminalNode LET(int i) {
 			return getToken(FOOLParser.LET, i);
 		}
@@ -261,7 +267,7 @@ public class FOOLParser extends Parser {
 					setState(43); match(FUN);
 					setState(44); ((DeclistContext)_localctx).i = match(ID);
 					setState(45); match(COLON);
-					setState(46); ((DeclistContext)_localctx).t = hotype();
+					setState(46); ((DeclistContext)_localctx).t = type();
 						//inserimento di ID nella symtable
 						            //Creo un nodo funzione
 						            FunNode functionNode = new FunNode((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),((DeclistContext)_localctx).t.ast); 
@@ -1028,7 +1034,7 @@ public class FOOLParser extends Parser {
 		"\37\3\2\2\2\36\25\3\2\2\2\36\30\3\2\2\2\37 \3\2\2\2 !\b\2\1\2!\"\7\13"+
 		"\2\2\"#\7\2\2\3#\3\3\2\2\2$T\b\3\1\2%&\7\36\2\2&\'\7(\2\2\'(\7\f\2\2("+
 		")\5\16\b\2)*\7\25\2\2*+\5\6\4\2+,\b\3\1\2,Q\3\2\2\2-.\7\37\2\2./\7(\2"+
-		"\2/\60\7\f\2\2\60\61\5\16\b\2\61\62\b\3\1\2\62\63\7\7\2\2\63C\b\3\1\2"+
+		"\2/\60\7\f\2\2\60\61\5\20\t\2\61\62\b\3\1\2\62\63\7\7\2\2\63C\b\3\1\2"+
 		"\64\65\7(\2\2\65\66\7\f\2\2\66\67\5\16\b\2\67@\b\3\1\289\7\r\2\29:\7("+
 		"\2\2:;\7\f\2\2;<\5\16\b\2<=\b\3\1\2=?\3\2\2\2>8\3\2\2\2?B\3\2\2\2@>\3"+
 		"\2\2\2@A\3\2\2\2AD\3\2\2\2B@\3\2\2\2C\64\3\2\2\2CD\3\2\2\2DE\3\2\2\2E"+

@@ -51,7 +51,7 @@ declist	returns [ArrayList<Node> astlist]
                 }   
             } 
       |  
-            FUN i=ID COLON t=hotype //TODO SAREBBE TYPE MA DA ERROR (???)
+            FUN i=ID COLON t=type //TODO SAREBBE TYPE MA DA ERROR (???)
 	        {	//inserimento di ID nella symtable
 	            //Creo un nodo funzione
 	            FunNode functionNode = new FunNode($i.text,$t.ast); 

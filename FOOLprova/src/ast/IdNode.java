@@ -30,34 +30,22 @@ public class IdNode implements Node {
 	  for (int i=0; i<nestingLevel-entry.getNestingLevel();i++)
 		  getAR+="lw\n";
 	  
-	  System.out.println("ID Node -> " + id);
 	  //IdNode viene utilizzato quando devo prendere il valore di una variabile (NON FUNZIONI)
 	  if(entry.getType() instanceof ArrowTypeNode) {
-		  System.out.println("RICHIAMO UN ARROWTYPE");
 		  return "lfp\n"+
-				  "push 112\n"+ //IDNODEARROW
-			 	 "pop\n"+
-          		 getAR+ //risalgo la catena statica degli AL per ottenere 
-                 //l'indirizzo dell'AR che contiene la dichiarazione di id 
+          		 getAR+ //risalgo la catena statica degli AL per ottenere l'indirizzo dell'AR che contiene la dichiarazione di id 
           		 "push "+entry.getOffset()+"\n"+ //indir (fp) ad AR dichiaraz. funzione (recuperato a offset ID)
-          		 //"push "+(entry.getOffset() + 1)+"\n"+ //CANCELLAAAAA
-          		 "add\n"+ 		//TODO bisogna capire bene cosa fa add+lw
+          		 "add\n"+ 
           		 "lw\n"+
-          		 "lfp\n"+   //TODO MODIFICATO, PROVA
+          		 "lfp\n"+  
           		 "push "+(entry.getOffset()-1)+"\n"+ // indir funzione (recuperato a offset ID - 1) 
-          		 //"push "+(entry.getOffset())+"\n"+ //CANCELLAAAAA
           		 "add\n"+
          		 "lw\n"
           		 ;
 	  }
-	  System.out.println("RICHIAMO VARIABILE NORMALE");
-	  return  "lfp\n"+
-	  			"push 111\n"+ //ID NODE
-		 		"pop\n"+
+	  return  	"lfp\n"+
                 getAR+ //risalgo la catena statica degli AL per ottenere 
                        //l'indirizzo dell'AR che contiene la dichiarazione di id 
-               "push 1111\n"+ //ID NODE
-		 		"pop\n"+
 		 		"push "+entry.getOffset()+"\n"+
 		 		"add\n"+
 		 		"lw\n";

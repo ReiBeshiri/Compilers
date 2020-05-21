@@ -118,9 +118,8 @@ in
     	
 in
   print(g(linsum, 3000)); */
-  
-/* NON Funziona (versione difficile) con il nostro */
-/* Non funziona con quello degli altri */
+
+/* FUNZIONA 3700: utilizzo di variabili funzionali innestate */
 /* let
     fun linsum:int(a:int,b:int)
     	a + b;
@@ -137,12 +136,9 @@ in
     	
 in
   print(g(linsum, 3000)); */
-  
-/* NON FUNZIONA con il nostro */
-/* Non funziona con quello degli altri */
-/* let
-  var t:int = 880;
 
+/* FUNZIONA 2000 */  
+/*let
   fun g:int(x:(int,int)->int)
     x(500,700);
     
@@ -153,10 +149,9 @@ in
     in 
       g(linsum);
 in
-  print(f(t)); */
+  print(f(800)); */
 
-/* FUNZIONA con il nostro */	
-/* Funziona con quello degli altri */
+/* FUNZIONA 2000 */
 let
   var t:int = 800;
     

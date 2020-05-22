@@ -25,15 +25,15 @@ public class FOOLlib {
 		List<Node> listParA = aArrow.getParList();
 		List<Node> listParB = bArrow.getParList();
 		if(listParA.size() != listParB.size()) {isSubtype=false;}
-		//Covarianza sul tipo di ritorno
+		//Covarianza sul tipo di ritorno, il retType di A deve essere sottotipo del retType di B
 		isSubtype = isSubtype(aArrow.getRet(), bArrow.getRet());
-		//Controllo che il tipo di ogni parametro del nodo A e del nodo B sia lo stesso (Contravariance)
+		//Controllo che il tipo di ogni parametro del nodo B sia sottotipo del nodo A (Contravariance)
 		for(int i=0; i<listParA.size(); i++) {
 			isSubtype = isSubtype && isSubtype(listParB.get(i), listParA.get(i));
 		}
 	}
 	else {
-		
+		//subType tra tipi normali
 		isSubtype = a.getClass().equals(b.getClass()) || ( (a instanceof BoolTypeNode) && (b instanceof IntTypeNode) );
 			
 	}

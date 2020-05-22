@@ -1,29 +1,28 @@
 package ast;
+
 import lib.*;
 
 public class IdNode implements Node {
 
-  private String id;
-  private int nestingLevel;
-  private STentry entry;
-  
-  
-  public IdNode (String i, STentry st, int nl) {
-   id=i;
-   nestingLevel=nl;
-   entry=st;   
-  }
-  
-  public String toPrint(String s) {
-	   return s+"Id:" + id + " at nestinglevel "+ nestingLevel + "\n" + 
-			   entry.toPrint(s+"  ");  
-  }
+	private String id; // id nel nodo
+	private int nestingLevel; // netinglevel del nodo
+	private STentry entry; // STentry del nodo -> ottenere informazioni salvate nell'entry della symbol
+							// table
 
-  public Node typeCheck() throws TypeException {
-	  //ora id ammette tipi anche funzionali (arrowtype), questo if dava errore con ogni id di tipo funzionale
-	//if (entry.getType() instanceof ArrowTypeNode) throw new TypeException("Wrong usage of function identifier "+id);
-	return entry.getType();
-  }
+	public IdNode(String i, STentry st, int nl) {
+		id = i;
+		nestingLevel = nl;
+		entry = st;
+	}
+
+	public String toPrint(String s) {
+		return s + "Id:" + id + " at nestinglevel " + nestingLevel + "\n" + entry.toPrint(s + "  ");
+	}
+
+	public Node typeCheck() throws TypeException {
+		//ora IdNode ammette tipi anche funzionali (arrowtype)
+		return entry.getType();
+	}
   
   public String codeGeneration() {
 	  String getAR="";

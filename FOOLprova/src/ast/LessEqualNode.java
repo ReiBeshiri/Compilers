@@ -1,40 +1,42 @@
 package ast;
+
 import lib.*;
 
 public class LessEqualNode implements Node {
 
-  private Node left;
-  private Node right;
-  
-  public LessEqualNode (Node l, Node r) {
-   left=l;
-   right=r;
-  }
-  
-  public String toPrint(String s) {
-   return s+"LessEqual\n" + left.toPrint(s+"  ")   
-                      + right.toPrint(s+"  ") ; 
-  }
-    
-  public Node typeCheck() throws TypeException {
-	Node l= left.typeCheck();  
-	Node r= right.typeCheck();  
-    if ( !(FOOLlib.isSubtype(l, r) || FOOLlib.isSubtype(r, l)) ) 
-    	throw new TypeException("Incompatible types in less equal");
-    return new BoolTypeNode();
-  }
-  
-  public String codeGeneration() {
-    String l1= FOOLlib.freshLabel();
-    String l2= FOOLlib.freshLabel();
-	  return left.codeGeneration()+
-			 right.codeGeneration()+
-			 "bleq "+l1+"\n"+
-			 "push 0\n"+
-			 "b "+l2+"\n"+
-			 l1+": \n"+
-			 "push 1\n"+
-			 l2+": \n";	         
-  }
-  
-}  
+	// nodi da comparare.
+	private Node left;
+	private Node right;
+
+	public LessEqualNode(Node l, Node r) {
+		left = l;
+		right = r;
+	}
+
+	public String toPrint(String s) {
+		return s + "LessEqual\n" + left.toPrint(s + "  ") + right.toPrint(s + "  ");
+	}
+
+	//type check per verificare che i tipi dei nodi siano comparabili.
+	public Node typeCheck() throws TypeException {
+		Node l = left.typeCheck();
+		Node r = right.typeCheck();
+		if (!(FOOLlib.isSubtype(l, r) || FOOLlib.isSubtype(r, l)))
+			throw new TypeException("Incompatible types in less equal");
+		return new BoolTypeNode();
+	}
+	
+	public String codeGeneration() {
+		String l1 = FOOLlib.freshLabel();
+		String l2 = FOOLlib.freshLabel();
+		return  left.codeGeneration() +		//risolvo ricorsivamente il nodo di sinistra (ci sarà il risultato dell'espressione)
+				right.codeGeneration() +	//risolvo ricorsivamente il nodo di destra (ci sarà il risultato dell'espressione)
+				"bleq " + l1 + "\n" +		//se left è <= right allora salto all'etichetta l1
+				"push 0\n" + 				//questa istruzione viene eseguita nel caso in cui left > right, e mette nello stack 0
+				"b " + l2 + "\n" +			//dopo aver messo 0 sullo stack salta per non eseguire altre istruzioni
+				l1 + ": \n" +				//branch nel caso in cui left sia stato <= di right
+				"push 1\n" +				//viene quindi messo 1 sullo stack
+				l2 + ": \n";				//etichetta richiamata per terminare la code generation
+	}
+
+}

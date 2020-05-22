@@ -32,7 +32,7 @@ int lexicalErrors=0;
  *------------------------------------------------------------------*/
  
 assembly:
-      ( t=PUSH n=NUMBER        { codem($t.line, PUSH, Integer.parseInt($n.text)); } //push NUMBER on the stack
+      ( t=PUSH n=NUMBER        { codem($t.line, PUSH, Integer.parseInt($n.text)); } //push NUMBER on the stack 
 	  | t=PUSH l=LABEL         { codem($t.line, PUSH); labelRef.put(i++,$l.text); } //push the location address pointed by LABEL on the stack	     
 	  | t=POP                  { codem($t.line, POP); } //pop the top of the stack 
 	  | t=ADD	                 { codem($t.line, ADD); } //replace the two values on top of the stack with their sum

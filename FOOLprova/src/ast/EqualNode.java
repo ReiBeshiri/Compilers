@@ -15,8 +15,9 @@ public class EqualNode implements Node {
    return s+"Equal\n" + left.toPrint(s+"  ")   
                       + right.toPrint(s+"  ") ; 
   }
-    
+   
   public Node typeCheck() throws TypeException {
+	//non viene consentita l'espressione con nodi di tipo funzionale
 	if (left instanceof ArrowTypeNode || right instanceof ArrowTypeNode)
 		throw new TypeException("ArrowTypeNode not allowed in equal");
 	Node l= left.typeCheck();  

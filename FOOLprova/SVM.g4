@@ -33,7 +33,7 @@ assembly:
 	  | DIV		    {code[i++] = DIV;}
 	  | STOREW	  {code[i++] = STOREW;} //
 	  | LOADW           {code[i++] = LOADW;} //
-	  | l=LABEL COL     {labelDef.put($l.text,i);}
+	  | l=LABEL COL     {labelDef.put($l.text,i);}//
 	  | BRANCH l=LABEL  {code[i++] = BRANCH;
                        labelRef.put(i++,$l.text);}
 	  | BRANCHEQ l=LABEL {code[i++] = BRANCHEQ;

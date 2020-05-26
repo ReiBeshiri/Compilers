@@ -21,7 +21,7 @@ in
     
 in
     print(z2); */
-
+    
 /* FUNZIONA 400: le variabili innestate funzionano correttamente */
 /* let
     fun add:int(c2:int, x2:int)
@@ -138,7 +138,7 @@ in
   print(g(linsum, 3000)); */
 
 /* FUNZIONA 2000 */  
-/*let
+/* let
   fun g:int(x:(int,int)->int)
     x(500,700);
     
@@ -152,7 +152,7 @@ in
   print(f(800)); */
 
 /* FUNZIONA 2000 */
-let
+/* let
   var t:int = 800;
     
   fun f:int(c:int)
@@ -162,4 +162,45 @@ let
     in 
       linsum(500, 700);   
 in
-  print(f(t));
+  print(f(t)); */
+  
+/* FUNZIONA 24: verifica del tipo inserito nella symbolTable quando viene effettuata una dichiarazione */
+/* let
+  fun g:int(x:(int,int)->int)
+    x(5,7);
+  fun f:int(c:int)
+    let
+      fun linsum:int(a:int,b:int)
+        (a+b)*c;
+      var j:(int,int)->int = linsum;      
+    in 
+      g(j);   
+in
+  print(f(2)); */
+  
+/* FUNZIONA: Covarianza e controvarianza implementate correttamente */
+let
+	fun a:int(x:bool, y:bool)
+    	x+y;
+    
+  	var b:(int,int)->bool = a;
+in
+  	print(b(0,1));
+
+/* RISULTATO = NON DOVREBBE FUNZIONARE (Violata covarianza) */  	
+/* let
+	fun a:bool(x:int, y:int)
+    	x+y;
+    
+  	var b:(int, int)->int = a;
+in
+  	print(b(0,1)); */
+  	
+/* RISULTATO = NON DOVREBBE FUNZIONARE (Violata controvarianza) */  	
+/* let
+	fun a:int(x:int, y:int)
+    	x+y;
+    
+  	var b:(bool, bool)->int = a;
+in
+  	print(b(0,1)); */

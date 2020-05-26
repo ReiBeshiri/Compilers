@@ -98,7 +98,7 @@ public class FOOLParser extends Parser {
 
 	private int nestingLevel = 0;
 	private ArrayList<HashMap<String,STentry>> symTable = new ArrayList<HashMap<String,STentry>>();
-	//livello ambiente con dichiarazioni piu' esterno � 0 (prima posizione ArrayList) invece che 1 (slides)
+	//il livello d'ambiente con dichiarazioni piu' esterno � 0 (prima posizione ArrayList) invece che 1 (slides)
 	//il "fronte" della lista di tabelle � symTable.get(nestingLevel)
 
 	public FOOLParser(TokenStream input) {
@@ -187,8 +187,9 @@ public class FOOLParser extends Parser {
 	public static class DeclistContext extends ParserRuleContext {
 		public ArrayList<Node> astlist;
 		public Token i;
-		public HotypeContext t;
+		public HotypeContext t1;
 		public ExpContext e;
+		public TypeContext t;
 		public Token fid;
 		public HotypeContext fty;
 		public Token id;
@@ -237,6 +238,12 @@ public class FOOLParser extends Parser {
 		}
 		public ExpContext exp(int i) {
 			return getRuleContext(ExpContext.class,i);
+		}
+		public List<TypeContext> type() {
+			return getRuleContexts(TypeContext.class);
+		}
+		public TypeContext type(int i) {
+			return getRuleContext(TypeContext.class,i);
 		}
 		public List<TerminalNode> LET() { return getTokens(FOOLParser.LET); }
 		public TerminalNode LET(int i) {
@@ -289,22 +296,27 @@ public class FOOLParser extends Parser {
 					setState(37);
 					match(COLON);
 					setState(38);
-					((DeclistContext)_localctx).t = hotype();
+					((DeclistContext)_localctx).t1 = hotype();
 					setState(39);
 					match(ASS);
 					setState(40);
 					((DeclistContext)_localctx).e = exp();
 
-						        	VarNode variable = new VarNode((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),((DeclistContext)_localctx).t.ast,((DeclistContext)_localctx).e.ast);  
-						            _localctx.astlist.add(variable);                                 
+						        	// Viene creato un nuovo oggetto che contiene le informazioni relative alla variabile */
+						        	VarNode variable = new VarNode((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),((DeclistContext)_localctx).t1.ast,((DeclistContext)_localctx).e.ast);
+						            // Aggiungo il nodo appena creato all'ast */
+						            _localctx.astlist.add(variable);                            
+						            // Controllo che non ci sia un altra variabile con lo stesso nome all'interno dello scope in cui viene dichiarata questa variabile*/
 						            HashMap<String,STentry> hm = symTable.get(nestingLevel);
-						            if ( hm.put((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),new STentry(nestingLevel,((DeclistContext)_localctx).t.ast,offset--)) != null  ) {
+						            if ( hm.put((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),new STentry(nestingLevel,((DeclistContext)_localctx).t1.ast,offset--)) != null  ) {
+						              // Nel caso ci sia restituisco un errore */
 						              System.out.println("Var id "+(((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null)+" at line "+(((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getLine():0)+" already declared");
 						              stErrors++; 
 						            }
-						            if(variable.getSymType() instanceof ArrowTypeNode){ //una var di tipo arrowtype node ha doppio offset
+						            // Nel caso la variabile sia di tipo funzionale occupa offset doppio (indirizzo fp di AR, indirizzo funzione(invocazione suo codice))*/
+						            if(variable.getSymType() instanceof ArrowTypeNode){ 
 					                	  offset--;
-					                }   
+					                }    
 					            
 					}
 					break;
@@ -317,25 +329,28 @@ public class FOOLParser extends Parser {
 					setState(45);
 					match(COLON);
 					setState(46);
-					((DeclistContext)_localctx).t = hotype();
-						//inserimento di ID nella symtable
-						            //Creo un nodo funzione
-						            FunNode functionNode = new FunNode((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),((DeclistContext)_localctx).t.ast); 
-						            //Aggiungo il nodo funzione all'ast   
-						            _localctx.astlist.add(functionNode);
-						            //Mi faccio dare la SymTable dello stesso livello in cui viene dichiarata la funzione                              
+					((DeclistContext)_localctx).t = type();
+						
+						        	//Tipo inserito nella symbolTable (utilizzato successivamente nella getSymType)
+						        	ArrayList<Node> parTypes = new ArrayList<Node>();
+									ArrowTypeNode funType = new ArrowTypeNode(parTypes,((DeclistContext)_localctx).t.ast);
+						        	// Creo un nuovo nodo che possa contenere le informazioni della funzione */
+						            FunNode functionNode = new FunNode((((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null),((DeclistContext)_localctx).t.ast, funType);
+						            // Aggiungo il nodo appena creato all'ast */
+						            _localctx.astlist.add(functionNode); 
+						            // Prendo in considerazione la SymTable dello stesso livello in cui viene dichiarata la funzione */                            
 						            HashMap<String,STentry> SymTableThisNestLev = symTable.get(nestingLevel);
-						            //Creo array per i parametri
-						            ArrayList<Node> parTypes = new ArrayList<Node>();
-						            //Controllo se esiste gi� la stessa funzione nella SymbolTable (il controllo restituisce null se NON c'� una funzione uguale)
-						            if ( SymTableThisNestLev.put( (((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null), new STentry(nestingLevel, new ArrowTypeNode(parTypes,((DeclistContext)_localctx).t.ast, true),offset)) != null  ) {
+						            // Controllo se esiste gi� una funzione con lo stesso nome nella SymbolTable (il controllo restituisce null se NON c'� una funzione con nome uguale) */
+						            if ( SymTableThisNestLev.put( (((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null), new STentry(nestingLevel, funType, offset)) != null  ) {
+						               // Nel caso ci sia restituisco un errore */
 						               System.out.println("Fun id "+(((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getText():null)+" at line "+(((DeclistContext)_localctx).i!=null?((DeclistContext)_localctx).i.getLine():0)+" already declared");
 						               stErrors++; 
 						            }
-						            offset-=2; //tutte le funz sono di tipo arrowtypeNode quindi occupano offset doppio
-					                //Aggiorno il NestingLevel siccome sto entrando in una funzione 
+						            // Siccome tutte le funzioni sono un ArrowTypeNode occupano offset doppio */
+						            offset-=2;
+					                // Aggiorno il NestingLevel siccome "entrando" nella funzione lo scope incrementa */
 					                nestingLevel++;
-					                //Creo la HashMap per la nuova funzone
+					                // Creo la HashMap per la nuova funzone */
 					                HashMap<String,STentry> hashMapNewFunction = new HashMap<String,STentry> ();
 					                symTable.add(hashMapNewFunction);
 					           
@@ -354,22 +369,22 @@ public class FOOLParser extends Parser {
 						setState(52);
 						((DeclistContext)_localctx).fty = hotype();
 						 
-						           		//Aggiunge alla lista dei parametri il nodo relativo ad un parametro
+						           		// Aggiungo alla lista riguardante i tipi dei parametri il tipo del primo parametro */
 						               	parTypes.add(((DeclistContext)_localctx).fty.ast);
-						               	//creo il nodo di un parametro
+						               	// Creo un nodo che possa contenere le informazioni relative al parametro */
 						                ParNode funParameter = new ParNode((((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null),((DeclistContext)_localctx).fty.ast);
-						                //aggiungo alla lista dei parametri della funzione un parametro
+						                // Aggiungo un parametro alla lista dei parametri della funzione */
 						                functionNode.addPar(funParameter);
-						                //Aggiungo alla Hash Map le informazioni del parametro
-						                	if(funParameter.getSymType() instanceof ArrowTypeNode){
-						                	  paroffset++;
-						                	}
-						                	if ( hashMapNewFunction.put((((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null), new STentry(nestingLevel,((DeclistContext)_localctx).fty.ast,paroffset++)) != null  ) { //Se c'� un parametro con lo stesso nome c'� un errore
-						                   		System.out.println("Parameter id "+(((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null)+" at line "+(((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getLine():0)+" already declared");
-						                   		stErrors++; 
-						                	}
-						                	//System.out.println("HA FATTO LA STAMPA");
-						            	
+						                // I parametri di tipo funzionale occupano offset doppio (indirizzo fp di AR, indirizzo funzione(invocazione suo codice)) */
+						                if(funParameter.getSymType() instanceof ArrowTypeNode){
+						                  paroffset++;
+						                }
+						                // Non � possibile dichiarare due parametri con lo stesso nome all'interno della stessa funzione */
+						                if ( hashMapNewFunction.put((((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null), new STentry(nestingLevel,((DeclistContext)_localctx).fty.ast,paroffset++)) != null  ) { 
+						                  System.out.println("Parameter id "+(((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getText():null)+" at line "+(((DeclistContext)_localctx).fid!=null?((DeclistContext)_localctx).fid.getLine():0)+" already declared");
+						                  stErrors++; 
+						                }
+						            
 						setState(62);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
@@ -385,18 +400,18 @@ public class FOOLParser extends Parser {
 							setState(57);
 							((DeclistContext)_localctx).ty = hotype();
 
-							                	//Faccio la stessa cosa fatta sopra per ogni parametro della funzione
-							                    parTypes.add(((DeclistContext)_localctx).ty.ast);
-							                    ParNode otherFunParameter = new ParNode((((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null),((DeclistContext)_localctx).ty.ast);
-							                    functionNode.addPar(otherFunParameter);
-							                    if(otherFunParameter.getSymType() instanceof ArrowTypeNode){
-							                	  paroffset++;
-							                	}
-							                    if (hashMapNewFunction.put((((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null), new STentry(nestingLevel,((DeclistContext)_localctx).ty.ast,paroffset++)) != null  ) {
-							                     	System.out.println("Parameter id "+(((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null)+" at line "+(((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getLine():0)+" already declared");
-							                     	stErrors++; 
-							                    }
-							                 
+							                // Per ogni parametro eseguo nuovamente le istruzioni scritte per il primo parametro */
+							                parTypes.add(((DeclistContext)_localctx).ty.ast);
+							                ParNode otherFunParameter = new ParNode((((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null),((DeclistContext)_localctx).ty.ast);
+							                functionNode.addPar(otherFunParameter);
+							                if(otherFunParameter.getSymType() instanceof ArrowTypeNode){
+							                	paroffset++;
+							                }
+							                if(hashMapNewFunction.put((((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null), new STentry(nestingLevel,((DeclistContext)_localctx).ty.ast,paroffset++)) != null  ) {
+							                	System.out.println("Parameter id "+(((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getText():null)+" at line "+(((DeclistContext)_localctx).id!=null?((DeclistContext)_localctx).id.getLine():0)+" already declared");
+							                	stErrors++; 
+							                }
+							           
 							}
 							}
 							setState(64);
@@ -426,10 +441,11 @@ public class FOOLParser extends Parser {
 					setState(75);
 					((DeclistContext)_localctx).e = exp();
 
-					              functionNode.addBody(((DeclistContext)_localctx).e.ast);
-					              //rimuovere la hashmap corrente poich� esco dallo scope               
-					              symTable.remove(nestingLevel); //COSAAAAAA???
-					              nestingLevel--;
+					           		// Aggiungo il corpo della funzione*/
+					           		functionNode.addBody(((DeclistContext)_localctx).e.ast);
+					           		// Rimuove la hashmap corrente poich� quando la funzione finisce si esce dallo scope (non � pi� necessario mantenere le informazioni di questa funzione) */
+					           		symTable.remove(nestingLevel); //COSAAAAAA???
+					           		nestingLevel--;
 					           
 					}
 					break;
@@ -886,14 +902,17 @@ public class FOOLParser extends Parser {
 				{
 				setState(178);
 				((ValueContext)_localctx).i = match(ID);
-				//cercare la dichiarazione
-				           int j=nestingLevel;
-				           STentry entry=null; 
-				           while (j>=0 && entry==null)
-				             entry=(symTable.get(j--)).get((((ValueContext)_localctx).i!=null?((ValueContext)_localctx).i.getText():null)); //cerca se l'id esiste nella symTable (arraylist) e ritorna la STentry
-				           if (entry==null) {
-				             System.out.println("Id "+(((ValueContext)_localctx).i!=null?((ValueContext)_localctx).i.getText():null)+" at line "+(((ValueContext)_localctx).i!=null?((ValueContext)_localctx).i.getLine():0)+" not declared");
-				             stErrors++; }               
+
+				      	int j=nestingLevel;
+				        STentry entry=null; 
+				        while (j>=0 && entry==null)
+				        	// Risale di nestingLevel per trovare la dichiarazione della variabile */
+				        	entry=(symTable.get(j--)).get((((ValueContext)_localctx).i!=null?((ValueContext)_localctx).i.getText():null));
+				        if (entry==null) {
+							// Se non viene trovata nessuna HashMap allora significa che la variabile utilizzata non � mai stata dichiarata */
+				        	System.out.println("Id "+(((ValueContext)_localctx).i!=null?((ValueContext)_localctx).i.getText():null)+" at line "+(((ValueContext)_localctx).i!=null?((ValueContext)_localctx).i.getLine():0)+" not declared");
+				        	stErrors++; 
+				       }               
 					   ((ValueContext)_localctx).ast =  new IdNode((((ValueContext)_localctx).i!=null?((ValueContext)_localctx).i.getText():null),entry,nestingLevel);
 				setState(197);
 				_errHandler.sync(this);
@@ -1101,8 +1120,8 @@ public class FOOLParser extends Parser {
 				setState(217);
 				((ArrowContext)_localctx).h = hotype();
 
-							parArrowTypes.add(((ArrowContext)_localctx).h.ast);
-						
+								parArrowTypes.add(((ArrowContext)_localctx).h.ast);
+							
 				setState(225);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -1114,8 +1133,8 @@ public class FOOLParser extends Parser {
 					setState(220);
 					((ArrowContext)_localctx).h = hotype();
 
-								parArrowTypes.add(((ArrowContext)_localctx).h.ast);
-							
+										parArrowTypes.add(((ArrowContext)_localctx).h.ast);
+									
 					}
 					}
 					setState(227);
@@ -1132,8 +1151,9 @@ public class FOOLParser extends Parser {
 			setState(232);
 			((ArrowContext)_localctx).t = type();
 
-					((ArrowContext)_localctx).ast =  new ArrowTypeNode(parArrowTypes, ((ArrowContext)_localctx).t.ast, false);
-				
+					// Creo un nuovo nodo contenente tutte le informazioni della variabile funzionale */
+					((ArrowContext)_localctx).ast =  new ArrowTypeNode(parArrowTypes, ((ArrowContext)_localctx).t.ast);
+					
 			}
 		}
 		catch (RecognitionException re) {
@@ -1171,7 +1191,7 @@ public class FOOLParser extends Parser {
 		"\2\35\37\3\2\2\2\36\25\3\2\2\2\36\30\3\2\2\2\37 \3\2\2\2 !\b\2\1\2!\""+
 		"\7\13\2\2\"#\7\2\2\3#\3\3\2\2\2$T\b\3\1\2%&\7\36\2\2&\'\7(\2\2\'(\7\f"+
 		"\2\2()\5\16\b\2)*\7\25\2\2*+\5\6\4\2+,\b\3\1\2,Q\3\2\2\2-.\7\37\2\2./"+
-		"\7(\2\2/\60\7\f\2\2\60\61\5\16\b\2\61\62\b\3\1\2\62\63\7\7\2\2\63C\b\3"+
+		"\7(\2\2/\60\7\f\2\2\60\61\5\20\t\2\61\62\b\3\1\2\62\63\7\7\2\2\63C\b\3"+
 		"\1\2\64\65\7(\2\2\65\66\7\f\2\2\66\67\5\16\b\2\67@\b\3\1\289\7\r\2\29"+
 		":\7(\2\2:;\7\f\2\2;<\5\16\b\2<=\b\3\1\2=?\3\2\2\2>8\3\2\2\2?B\3\2\2\2"+
 		"@>\3\2\2\2@A\3\2\2\2AD\3\2\2\2B@\3\2\2\2C\64\3\2\2\2CD\3\2\2\2DE\3\2\2"+

@@ -29,24 +29,29 @@ public class IdNode implements Node {
 	  for (int i=0; i<nestingLevel-entry.getNestingLevel();i++)
 		  getAR+="lw\n";
 	  
-	  //IdNode viene utilizzato quando devo prendere il valore di una variabile (NON FUNZIONI)
 	  if(entry.getType() instanceof ArrowTypeNode) {
-		  return "lfp\n"+
-          		 getAR+ //risalgo la catena statica degli AL per ottenere l'indirizzo dell'AR che contiene la dichiarazione di id 
-          		 "push "+entry.getOffset()+"\n"+ //indir (fp) ad AR dichiaraz. funzione (recuperato a offset ID)
+		  return "push 111\n" +
+				 "pop\n" +
+				 //carico sullo stack l'indirizzo fp dell'AR in cui è dichiarata la funzione (recuperato a offset ID)
+				 "lfp\n"+	//carico il frame corrente
+          		 getAR+ 	//risalgo la catena statica degli AL per ottenere l'indirizzo dell'AR che contiene la dichiarazione di id 
+          		 "push "+entry.getOffset()+"\n"+
           		 "add\n"+ 
           		 "lw\n"+
+          		 // carico sullo stack l'indirizzo della funzione (recuperato a offset ID - 1) 
           		 "lfp\n"+  
-          		 "push "+(entry.getOffset()-1)+"\n"+ // indir funzione (recuperato a offset ID - 1) 
+          		 "push "+(entry.getOffset()-1)+"\n"+ 
           		 "add\n"+
-         		 "lw\n"
-          		 ;
+         		 "lw\n";
 	  }
-	  return  	"lfp\n"+
+	  return  	"push 111\n" +
+				"pop\n" +
+			  	"lfp\n"+ //carico il frame corrente
                 getAR+ //risalgo la catena statica degli AL per ottenere 
                        //l'indirizzo dell'AR che contiene la dichiarazione di id 
-		 		"push "+entry.getOffset()+"\n"+
+		 		"push "+entry.getOffset()+"\n"+ //aggiungo l'offset per calcolare l'indirizzo
+                       							//in cui è contenuto il valore del parametro
 		 		"add\n"+
-		 		"lw\n";
+		 		"lw\n"; //carico il valore del parametro
   }
 }  

@@ -1,4 +1,0 @@
-let
-  fun linsum:int(a:int,b:int)
-in
-  print(10);

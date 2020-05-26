@@ -1,25 +1,12 @@
 let
   fun g:int(x:(int,int)->int)
     x(5,7);
+    
   fun f:int(c:int)
     let
       fun linsum:int(a:int,b:int)
-        (a+b)*c;      
+        (a+b)*c;
     in 
       g(linsum);   
 in
   print(f(2));
-  
-/*
-g(linsum:int(a:int,b:int) -> (a+b)*c);
-fun lin2:int(t:int,q:int)
-      	(t * q) - c;
-var x:(int,int)->int = 0;
-*/
-
-/*
-f(2) -> richiama f passandogli 2 che sarà il valore di c.
-		A questo punto f chiama g, g vuole come parametro una funzione, che abbia come return value "int" e come parametri due valori "int,int".
-		A questo punto g nella riga 3 (dopo aver controllato che linsum rispetti "x:(int,int)->int"), richiamerà la funzione linsum(5,7).
-		Il risultato è -> (5 + 7) * 2.
-*/

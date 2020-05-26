@@ -45,15 +45,21 @@ js
 function1:
 cfp
 lra
+push 111
+pop
 lfp
 push 1
 add
 lw
+push 111
+pop
 lfp
 push 2
 add
 lw
 add
+push 111
+pop
 lfp
 lw
 push 1
@@ -76,6 +82,8 @@ lra
 lfp
 push function1
 lfp
+push 111
+pop
 lfp
 push -2
 add

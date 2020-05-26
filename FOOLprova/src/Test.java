@@ -1,15 +1,12 @@
 import java.nio.file.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import ast.*;
 
 import org.antlr.v4.runtime.*;
 
 import ast.Node;
 import lib.FOOLlib;
 import lib.TypeException;
-import java.nio.file.*;
-import java.nio.file.*;
 
 public class Test {
 	

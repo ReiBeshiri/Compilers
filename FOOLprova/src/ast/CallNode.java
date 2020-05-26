@@ -1,7 +1,6 @@
 package ast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import lib.*;
 
@@ -27,13 +26,17 @@ public class CallNode implements Node {
 	}
 
 	public Node typeCheck() throws TypeException {
-		// il tipo dell'id deve essere funzionale, lancia un eccezzione altrimenti
+		//il tipo dell'id deve essere funzionale, lancia un eccezzione altrimenti
 		if (!(entry.getType() instanceof ArrowTypeNode))
 			throw new TypeException("Invocation of a non-function " + id);
+		/* Controllo che il numero di parametri utilizzati per l'invocazione della funzione sia uguale 
+		 * al numero di parametri utilizzati nella dichiarazione della funzione */
 		ArrowTypeNode t = (ArrowTypeNode) entry.getType();
 		ArrayList<Node> p = t.getParList();
 		if (!(p.size() == parlist.size()))
 			throw new TypeException("Wrong number of parameters in the invocation of " + id);
+		/* Controllo che il tipo utilizzato nell'invocazione della funzione sia sottotipo di quello utilizzato nella dichiarazione
+		 * della funzione */
 		for (int i = 0; i < parlist.size(); i++)
 			if (!(FOOLlib.isSubtype((parlist.get(i)).typeCheck(), p.get(i))))
 				throw new TypeException("Wrong type for " + (i + 1) + "-th parameter in the invocation of " + id);
@@ -42,25 +45,28 @@ public class CallNode implements Node {
   
   public String codeGeneration() {
 	  String parCode="", getAR="";
-	  
-	  for (int i=parlist.size()-1;i>=0;i--) {
+	  /* Per ogni parametro genero il rispettivo codice */
+	  for (int i=parlist.size()-1; i>=0 ;i--) {
 		 parCode += parlist.get(i).codeGeneration();
 	  }
+	  /* Permette di risalire all'AR in cui è dichiarata la funzione (risalita di catena statica) */
 	  for (int i=0; i<nestingLevel-entry.getNestingLevel();i++)
 			  getAR+="lw\n";
 	  //CallNode viene utilizzato per richiamare una funzione
-	  return 	"lfp\n" + // Metto Control Link (Frame Pointer dell'ID della funzione chiamante) in cima allo stack
-				parCode + // Genero il codice delle espressioni dei parametri (in ordine inverso)
+	  
+	  return 	"lfp\n" + 	// Metto Control Link (Frame Pointer dell'ID della funzione chiamante) in cima allo stack
+			  	parCode + 	// Inserisco il valore generato dall'espressione di ogni parametro (in ordine inverso)
 				"lfp\n" +
-				getAR + // Push dell'Access Link (puntatore all'AR della dichiarazione della funzione)
+				getAR + 	// Attraverso la risalita statica effettuata precedentemente inserisco nello stack l'Access 
+							//Link (puntatore all'AR della dichiarazione della funzione)
 				"push " + entry.getOffset() + "\n" +
 				"add\n" + 
-				"lw\n" + // Push dell'indirizzo della dichiarazione della funzione (set nuovo AL)
-				"lfp\n" + 
-				getAR +
-				"push " + (entry.getOffset() - 1) + "\n" +
-				"add\n" +
-				"lw\n" +
-				"js\n"; // Salto a codice funzione
+				"lw\n" + 	//(set nuovo AL)
+				"lfp\n" + 	// Risalgo lo stack per ottenere l'indirizzo della funzione a cui devo saltare 
+				getAR +   
+				"push " + (entry.getOffset() - 1) + "\n" + 
+				"add\n" +  
+				"lw\n" +  
+				"js\n"; 	// Salto a codice funzione
   }
 }

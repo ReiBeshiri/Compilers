@@ -10,10 +10,12 @@ public class FunNode implements DecNode {
 	private ArrayList<Node> parlist = new ArrayList<Node>(); // campo "parlist" che è lista di Node
 	private ArrayList<Node> declist = new ArrayList<Node>();
 	private Node exp;
+	private Node symType;
 
-	public FunNode(String i, Node t) {
+	public FunNode(String i, Node t, Node symType) {
 		id = i;
 		type = t;
+		this.symType = symType;
 	}
 
 	public void addDec(ArrayList<Node> d) {
@@ -39,12 +41,15 @@ public class FunNode implements DecNode {
 	}
 
 	public Node typeCheck() throws TypeException {
-		for (Node dec : declist)
+		/* Controlla se c'è un TypeCheckError per ogni nodo all'interno della declist */
+		for (Node dec : declist) {
 			try {
 				dec.typeCheck();
 			} catch (TypeException e) {
 				System.out.println("Type checking error in a declaration: " + e.text);
 			}
+		}
+		/* Controllo che il tipo restituito dall'espressione della funzione sia sottotipo di quello specificato come tipo di ritorno */
 		if (!FOOLlib.isSubtype(exp.typeCheck(), type))
 			throw new TypeException("Wrong return type for function " + id);
 		return null;
@@ -55,8 +60,7 @@ public class FunNode implements DecNode {
 	  for (Node dec:declist) {
 		    declCode+=dec.codeGeneration();	
 		    popDecl+= "pop\n"; 
-		    //nel caso in cui sia di tipo FunNode eseguo due pop
-		    if(dec instanceof FunNode) { 
+		    if(((DecNode) dec).getSymType() instanceof ArrowTypeNode) {
 		    	popDecl+="pop\n"; 
 		    }
 	  }
@@ -68,27 +72,31 @@ public class FunNode implements DecNode {
 	    	}
 	  }
 	  String funl=FOOLlib.freshFunLabel();
+	  /* questo codice viene inserito nell'etichetta  (ovvero è la parte che viene 
+	   * eseguita quando viene richiamata la funzione */
 	  FOOLlib.putCode(
-			    funl+":\n"+ 
-			    "cfp\n"+ 				//set $fp to $sp value				
-				"lra\n"+ 				//push $ra value
-	    		declCode+ 				//generate code for local declarations (they use the new $fp)
-	    		exp.codeGeneration()+	//generate code for function body expression
-	    		"stm\n"+ 				//set $tm to popped value (function result)
-	    		popDecl+ 				// remove local declarations from stack
-	    		"sra\n"+ 				// set $ra to popped value
-	    		"pop\n"+ 				// remove Access Link from stack 
-	    		popParl+ 				// remove parameters from stack
-	    		"sfp\n"+ 				// set $fp to popped value (Control Link)
-	    		"ltm\n"+ 				// push $tm value (function result)
-	    		"lra\n"+"js\n" 			// jump to $ra value
-			  );	  
-	  return  "lfp\n"+ 					//load fp value
-	  	      "push "+ funl +"\n";		//push label to jump to
+			    funl+":\n"+ 			//etichetta della funzione 
+			    "cfp\n"+ 				//cambia il frame pointer $fp mettendoci $sp (punterà al frame della funzione)				
+				"lra\n"+ 				//carico sullo stack il return address ($ra)
+	    		declCode+ 				//genero il codice per le dichiarazioni locali (utilizzando il nuovo valore di $fp)
+	    		exp.codeGeneration()+	//genero il codice del corpo della funzione
+	    		"stm\n"+ 				//metto sul registro $tm il risultato della funzione
+	    		popDecl+ 				//rimuovo dallo stack le dichiarazioni locali
+	    		"sra\n"+ 				//inserisco nel registro $ra l'indirizzo di ritorno presente sullo stack
+	    		"pop\n"+ 				//rimuovo l'access link dallo stack
+	    		popParl+ 				//rimuovo i parametri dallo stack
+	    		"sfp\n"+ 				//modifico $fp per farlo puntare al frame del chiamante
+	    		"ltm\n"+ 				//carico sullo stack $tm (il risultato della funzione chiamata)
+	    		"lra\n"+"js\n" 			//carico sullo stack il return address ed effettuo il salto
+			  );
+	  /* code generation che viene inserita nello stack alla dichiarazione di una funzione */
+	  return  "lfp\n"+ 					//carica il frame corrente, descrive in quale frame è stata dichiarata 
+			  							//questa funzione (servirà successivamente per calcolare l'access link)
+	  	      "push "+ funl +"\n";		//inserisce nello stack l'indirizzo della funzione
   }
 
   public Node getSymType() {
-	return type;
+	return symType;
   }
 
 }  
